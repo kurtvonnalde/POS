@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import axios from "axios";
+
 
 const Register: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -8,12 +10,13 @@ const Register: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const response = await fetch("http://localhost:8000/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, email, password, role }),
+    const response = await axios.post("http://localhost:8000/register", {
+      username,
+      email,
+      password,
+      role
     });
-    const data = await response.json();
+    const data = await response.data;
     alert(data.message || "Registration successful");
   };
 
