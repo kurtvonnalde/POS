@@ -6,15 +6,16 @@ const Login: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const response = await fetch("http://localhost:8000/login", {
+    const response = await fetch("http://localhost:8000/auth/login", {
       method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({ username, password }),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
     });
     const data = await response.json();
     if (data.access_token) {
       localStorage.setItem("token", data.access_token);
       alert("Login successful");
+      window.location.href = "/products"; 
       // Redirect based on role if included in token payload
     } else {
       alert("Login failed");

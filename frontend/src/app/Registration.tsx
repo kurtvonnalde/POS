@@ -4,7 +4,7 @@ import axios from "axios";
 
 const Register: React.FC = () => {
   const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
+  const [full_name, setFullName] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("cashier");
 
@@ -12,7 +12,7 @@ const Register: React.FC = () => {
     e.preventDefault();
     const response = await axios.post("http://localhost:8000/auth/register", {
       username,
-      email,
+      full_name,
       password,
       role
     });
@@ -32,10 +32,10 @@ const Register: React.FC = () => {
           required
         />
         <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          type="text"
+          placeholder="Full Name"
+          value={full_name}
+          onChange={(e) => setFullName(e.target.value)}
           required
         />
         <input
@@ -48,7 +48,9 @@ const Register: React.FC = () => {
         <select value={role} onChange={(e) => setRole(e.target.value)}>
           <option value="admin">Admin</option>
           <option value="cashier">Cashier</option>
-          <option value="auditor">Auditor</option>
+          <option value="auditor">Manager</option>
+          <option value="auditor">Viewer</option>
+          
         </select>
         <button type="submit">Register</button>
       </form>

@@ -1,33 +1,91 @@
-import { Routes, Route } from 'react-router-dom'
-import Header from './component/Header'
-import Footer from './component/Footer'
-import Login from './app/Login'
-import Register from './app/Registration'
-import Products from './app/pages/products/Products'
-import Sales from './app/pages/sales/Sales'
-import Inventory from './app/pages/inventory/Inventory'
-import Reports from './app/pages/reports/Reports'
-import Settings from './app/pages/settings/Settings'
+import { Routes, Route } from "react-router-dom";
+import Login from "./app/Login";
+import Register from "./app/Registration";
+import Products from "./app/pages/products/Products";
+import Sales from "./app/pages/sales/Sales";
+import Inventory from "./app/pages/inventory/Inventory";
+import Reports from "./app/pages/reports/Reports";
+import Settings from "./app/pages/settings/Settings";
+import ProtectedRoute from "./component/ProtectedRoute";
+import AppLayout from "./component/AppLayout";
+import AuthLayout from "./component/AuthLayout";
 
 function App() {
   return (
-    <>
-      <Header />
-      <main>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/auth/register" element={<Register />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/sales" element={<Sales />} />
-          <Route path="/inventory" element={<Inventory />} />
-          <Route path="/reports" element={<Reports />} />
-          <Route path="/settings" element={<Settings />} />
-        </Routes>
-      </main>
-      <Footer />
-    </>
+    <Routes>
+      {/* Public routes (no header/footer) */}
+      <Route
+        path="/auth/login"
+        element={
+          <AuthLayout>
+            <Login />
+          </AuthLayout>
+        }
+      />
+
+      {/* Protected routes (with header/footer) */}
+      <Route
+        path="/auth/register"
+        element={
+          <ProtectedRoute>
+            <AppLayout>
+              <Register />
+            </AppLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/products"
+        element={
+          <ProtectedRoute>
+            <AppLayout>
+              <Products />
+            </AppLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/sales"
+        element={
+          <ProtectedRoute>
+            <AppLayout>
+              <Sales />
+            </AppLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/inventory"
+        element={
+          <ProtectedRoute>
+            <AppLayout>
+              <Inventory />
+            </AppLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/reports"
+        element={
+          <ProtectedRoute>
+            <AppLayout>
+              <Reports />
+            </AppLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/settings"
+        element={
+          <ProtectedRoute>
+            <AppLayout>
+              <Settings />
+            </AppLayout>
+          </ProtectedRoute>
+        }
+      />
+    </Routes>
   );
 }
 
 export default App;
-

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Header.scss";
 import {FaCartPlus, FaMoon, FaArrowCircleLeft, FaSun, FaCommentDollar, FaWallet, FaClipboardList} from "react-icons/fa";
-import { FaGear } from "react-icons/fa6";
+import { FaChartLine, FaChartSimple, FaGear } from "react-icons/fa6";
 import { Link, useLocation } from "react-router-dom";
 
 export default function Header() {
@@ -18,6 +18,12 @@ export default function Header() {
   };
   const location = useLocation();
   const isActive = (path: string) => location.pathname === path;
+
+  const handleLogout = () => {
+  localStorage.removeItem("token");
+  window.location.href = "/auth/login"; // redirect to login
+};
+
 
   return (
      <div className={`sidebar-container${isShrinkView ? " shrink" : ""}`}>
@@ -62,13 +68,13 @@ export default function Header() {
           </li>
           <li className={`sidebar-listItem ${isActive("/sales") ? "active" : ""}`}>
             <Link to="/sales" className="nav-link">
-              <FaCommentDollar style={{marginRight: "10px"}} className="sidebar-listIcon"/>
+              <FaChartSimple  style={{marginRight: "10px"}} className="sidebar-listIcon"/>
               <span className="sidebar-listItemText">Sales</span>
             </Link>
           </li>
           <li className={`sidebar-listItem ${isActive("/reports") ? "active" : ""}`}>
             <Link to="/reports" className="nav-link">
-                <FaWallet style={{marginRight: "10px"}} className="sidebar-listIcon"/>
+                <FaChartLine  style={{marginRight: "10px"}} className="sidebar-listIcon"/>
               <span className="sidebar-listItemText">Reports</span>
             </Link>
           </li>
@@ -93,6 +99,8 @@ export default function Header() {
             alt="Monica Geller"
           />
           <span>Monica Geller</span>
+          <button
+          onClick={handleLogout}>Logout</button>
         </div>
       </div>
     </div>
