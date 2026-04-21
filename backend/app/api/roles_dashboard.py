@@ -1,17 +1,7 @@
-from fastapi import APIRouter, Depends, HTTPException, Security
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-import jwt
+from fastapi import APIRouter, Depends, HTTPException
+from app.api.auth import get_current_user
 
 router = APIRouter(prefix="/dashboards", tags=["dashboards"])
-
-SECRET_KEY = "0000"
-ALGORITHM = "HS256"
-security = HTTPBearer()
-
-def get_current_user(credentials: HTTPAuthorizationCredentials = Security(security)):
-    token = credentials.credentials
-    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-    return payload
 
 @router.get("/admin")
 def admin_dashboard(user=Depends(get_current_user)):

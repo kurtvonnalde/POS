@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Security
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
 import jwt as pyjwt
 from pydantic import BaseModel
@@ -9,6 +10,7 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 
 SECRET_KEY = "0000"
 ALGORITHM = "HS256"
+security = HTTPBearer()
 
 # === Schemas ===
 class UserCreate(BaseModel):
@@ -55,4 +57,26 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
     token = pyjwt.encode({"sub": db_user.username, "role": db_user.role}, SECRET_KEY, algorithm=ALGORITHM)
-    return {"access_token": token, "token_type": "bearer", "username": db_user.username}
+    return {"access_token": token, "token_type": "bearer", "username": db_user.username, "role": db_user.role}
+
+# === Token Verification ===
+def get_current_user(credentials: HTTPAuthorizationCredentials = Security(security)):
+    """Verify and decode JWT token"""
+    try:
+        token = credentials.credentials
+        payload = pyjwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        username: str = payload.get("sub")
+        if username is None:
+            raise HTTPException(status_code=401, detail="Invalid token")
+        return payload
+    except pyjwt.InvalidTokenError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+@router.get("/verify")
+def verify_token(current_user: dict = Depends(get_current_user)):
+    """Verify if the provided token is valid"""
+    return {
+        "valid": True, 
+        "username": current_user.get("sub"),
+        "role": current_user.get("role")
+    }

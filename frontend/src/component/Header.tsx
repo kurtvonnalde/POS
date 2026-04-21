@@ -72,6 +72,14 @@ export default function Header({
   }, []);
 
   const [username, setUsername] = useState<string>("");
+  const [role, setRole] = useState<string>("");
+
+  useEffect(() => {
+    const storedRole = localStorage.getItem("role");
+    if (storedRole) {
+      setRole(storedRole);
+    }
+  }, []);
 
   useEffect(() => {
     const storedUsername = localStorage.getItem("username");
@@ -161,7 +169,8 @@ export default function Header({
               <span className="sidebar-listItemText">Inventory</span>
             </Link>
           </li>
-          <li
+          {role === "admin" && (
+            <li
             className={`sidebar-listItem ${isActive("/settings") ? "active" : ""}`}
           >
             <Link to="/settings" className="nav-link">
@@ -172,6 +181,7 @@ export default function Header({
               <span className="sidebar-listItemText">Settings</span>
             </Link>
           </li>
+          )}
         </ul>
         <div className="sidebar-profileSection">
           <div className="user-menu-container" ref={userMenuRef}>

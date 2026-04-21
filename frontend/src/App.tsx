@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "./app/Login";
 import Register from "./app/Registration";
 import Products from "./app/pages/products/Products";
@@ -13,6 +13,9 @@ import AuthLayout from "./component/AuthLayout";
 function App() {
   return (
     <Routes>
+      {/* Root redirect */}
+      <Route path="/" element={<Navigate to="/products" replace />} />
+
       {/* Public routes (no header/footer) */}
       <Route
         path="/auth/login"
@@ -67,7 +70,7 @@ function App() {
       <Route
         path="/reports"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute requiredRole={["manager", "admin"]}>
             <AppLayout>
               <Reports />
             </AppLayout>
@@ -77,7 +80,7 @@ function App() {
       <Route
         path="/settings"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute requiredRole="admin">
             <AppLayout>
               <Settings isSidebarCollapsed={true} />
             </AppLayout>
