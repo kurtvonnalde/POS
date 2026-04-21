@@ -63,9 +63,10 @@ export default function Settings({
           </button>
         ))}
       </div>
+      
       <div className="settings-content-wrapper">
         {activeTab === "tab1" && (
-          <section className="admin-user-tab">
+          <><section className="admin-user-tab">
             <div className="admin-user-toolbar admin-user-card">
               <div className="admin-user-toolbar-left">
                 <button
@@ -94,9 +95,7 @@ export default function Settings({
               </div>
             )}
           </section>
-        )}
-
-        <section className="admin-user-search admin-user-card">
+            <section className="admin-user-search admin-user-card">
           <div className="admin-user-search-input-wrap">
             <Search size={16} className="admin-user-search-icon" />
             <input
@@ -117,8 +116,7 @@ export default function Settings({
             Search
           </button>
         </section>
-
-        <section className="admin-user-table-card admin-user-card">
+         <section className="admin-user-table-card admin-user-card">
           <table className="admin-user-table">
             <thead>
               <tr>
@@ -157,6 +155,12 @@ export default function Settings({
             </tbody>
           </table>
         </section>
+            </>
+        )}
+
+        
+
+       
 
         
 
