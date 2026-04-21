@@ -17,7 +17,9 @@ const Login: React.FC = () => {
     });
     const data = await response.json();
     if (data.access_token) {
+      console.log("Login successful:", data);
       localStorage.setItem("token", data.access_token);
+      localStorage.setItem("username", data.username);
       alert("Login successful");
       window.location.href = "/products";
       // Redirect based on role if included in token payload
