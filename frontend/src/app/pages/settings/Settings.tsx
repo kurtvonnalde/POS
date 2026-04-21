@@ -1,10 +1,10 @@
 import React from "react";
+import "./Settings.scss";
 
-export default function Home() {
-    return (
-        <div>
-            <h1>Settings Page</h1>
-            <p>This is where you can manage your settings.</p>
-        </div>
-    );
+export default function Settings({ isSidebarCollapsed }: { isSidebarCollapsed: boolean }) {
+  return (
+    <div className={`settings-container ${isSidebarCollapsed ? "shrink" : ""}`}>
+      <h1>Settings Page</h1>
+    </div>
+  );
 }

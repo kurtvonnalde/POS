@@ -20,6 +20,7 @@
     position: fixed;
     top: 0;
     left: 0;
+    transition: width 0.3s ease;
 
     width: 240px;
     height: 100vh;   // full height of viewport

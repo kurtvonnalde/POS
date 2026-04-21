@@ -79,7 +79,7 @@ function App() {
         element={
           <ProtectedRoute>
             <AppLayout>
-              <Settings />
+              <Settings isSidebarCollapsed={true} />
             </AppLayout>
           </ProtectedRoute>
         }
