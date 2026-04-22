@@ -5,11 +5,16 @@ import jwt as pyjwt
 from pydantic import BaseModel
 from app import model as models, database
 from app.utils import hash_password, verify_password
+import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
+
+SECRET_KEY = os.getenv("SECRET_KEY")
+ALGORITHM = os.getenv("ALGORITHM", "HS256")
 
 router = APIRouter(prefix="/auth", tags=["auth"])
-
-SECRET_KEY = "0000"
-ALGORITHM = "HS256"
 security = HTTPBearer()
 
 # === Schemas ===

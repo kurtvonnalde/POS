@@ -291,3 +291,56 @@
   line-height: 1;
   margin: 0.55rem;
 }
+
+.admin-user-pagination{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem 1rem;
+  border-top: 1px solid rgba(125, 122, 122, 0.1);
+}
+
+.admin-user-pagination-info{
+  margin: 0;
+  font-size: 0.88rem;
+}
+
+.admin-user-pagination-actions{
+  display: inline-flex;
+  align-items: center;
+  gap: 0.84rem;
+}
+
+.admin-user-tool-btn-pgn{
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid var(--item-hover);
+  border-radius: 10px;
+  padding: 0.6rem 1rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.admin-user-tool-btn-pgn:muted{
+  background: rgba(28, 77, 142, 0.153);
+}
+
+.admin-user-pagination-actions .admin-user-tool-btn-pgn{
+  padding: 0.48rem 0.8rem;
+  font-size: 0.85rem;
+}
+
+.admin-user-pagination-actions .admin-user-tool-btn-pgn:disabled{
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.admin-user-pagination-page{
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+

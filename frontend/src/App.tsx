@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "./app/Login";
-import Register from "./app/Registration";
+import Register from "./component/users/Registration";
 import Products from "./app/pages/products/Products";
 import Sales from "./app/pages/sales/Sales";
 import Inventory from "./app/pages/inventory/Inventory";
@@ -27,16 +27,6 @@ function App() {
       />
 
       {/* Protected routes (with header/footer) */}
-      <Route
-        path="/auth/register"
-        element={
-          <ProtectedRoute>
-            <AppLayout>
-              <Register />
-            </AppLayout>
-          </ProtectedRoute>
-        }
-      />
       <Route
         path="/products"
         element={

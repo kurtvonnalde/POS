@@ -15,8 +15,8 @@ def cashier_dashboard(user=Depends(get_current_user)):
         raise HTTPException(status_code=403, detail="Not authorized")
     return {"message": "Welcome Cashier!"}
 
-@router.get("/auditor")
-def auditor_dashboard(user=Depends(get_current_user)):
-    if user["role"] != "auditor":
+@router.get("/viewer")
+def viewer_dashboard(user=Depends(get_current_user)):
+    if user["role"] != "viewer":
         raise HTTPException(status_code=403, detail="Not authorized")
-    return {"message": "Welcome Auditor!"}
+    return {"message": "Welcome Viewer!"}
