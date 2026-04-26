@@ -1,0 +1,327 @@
+.sidebar {
+  &-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    
+    @media screen and (max-height: 520px) {
+       overflow-y: auto;
+       overflow-x: hidden;
+    }
+  }
+  &-container {
+    background-color: var(--main-container-bg);
+    box-shadow: var(--container-shadow);
+    border-radius: 10px;
+    padding: 16px;
+    transition: width .3s ease-in-out;
+
+    // Make it fixed on the left
+    position: fixed;
+    top: 0;
+    left: 0;
+    transition: width 0.3s ease;
+
+    width: 240px;
+    height: 100vh;   // full height of viewport
+    max-height: 100vh; // ensure it fills the screen
+  
+    &.shrink {
+      width: 92px;
+    }
+  }
+  &-logo{
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--text-color);
+    align-self: center;
+    margin-bottom: 24px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    
+    .shrink & { display: none; }
+  }
+
+  
+  &-themeInput {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+  }
+  
+  &-themeInputText {
+    font-size: 14px;
+    opacity: 1;
+    transform: translatex(0);
+    transition: .2s ease-in-out;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    .shrink & {
+      width: 0;
+      opacity: 0;
+      transform: translatex(-8px);
+    }
+  }
+  
+  &-themeType {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 8px;
+    text-align: center;
+    z-index: 1;
+    flex-shrink: 0;
+    line-height: 20px;
+    
+    .shrink & {
+      width: 100%;
+    }
+  }
+  
+  &-themeContainer {
+    padding: 4px;
+    border-radius: 4px;
+    color: var(--text-color);
+    overflow: hidden;
+    background-color: var(--main-bg);
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  
+  &-themeLabel {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    cursor: pointer;
+    
+    svg { width: 18px; height: 18px; }
+    &.switched {
+      .shrink & .light { display: none; }
+      &:before {
+        left: 50%;
+        .shrink & { left: 2px; }
+      }
+    }
+
+    &:not(.switched) .shrink & .dark { display: none; }
+    &:before {
+      content: "";
+      position: absolute;
+      z-index: 0;
+      display: inline-block;
+      width: calc(50% - 2px);
+      height: calc(100% - 4px);
+      border-radius: 4px;
+      background-color: var(--main-container-bg);
+      left: 2px;
+      top: 50%;
+      transform: translatey(-50%);
+      transition: left .3s ease;
+      
+      .shrink & { width: calc(100% - 4px); }
+    }
+  }
+  
+  &-viewButton {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: none;
+    right: -10px;
+    top: 32px;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    cursor: pointer;
+    transition: .3s ease-in-out;
+    color: #fff;
+    box-shadow: var(--container-shadow);
+    background-color: var(--secondary-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    &:hover { opacity: 0.8; }
+    svg { width: 16px; }
+    .shrink & { transform: rotatey(-180deg); }
+  }
+  
+  &-list {
+    list-style: none;
+    padding: 0;
+    margin: 12px 0 0;
+  }
+  
+  &-listItem {
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    animation: fadeInItem .6s forwards;
+    transition: background .2s ease-in;
+    transform: translatex(-16px);
+    opacity: 0;
+    padding: 8px 0;
+    position: relative;
+ 
+    .shrink & span { visibility: hidden; }
+    &.active a { background-color: var(--main-bg); }
+    &:not(.active) a:hover {
+      background-color: var(--item-hover);
+    }
+    &:hover .sidebar-listItemText {
+      display: inline-block;
+      opacity: 1;
+      left: calc(100% + 8px);
+      visibility: visible;
+    }
+    + li {
+      border-top: 1px solid var(--item-hover);
+    } 
+    a {
+      width: 100%;
+      padding: 20px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+  }
+  
+  &-listIcon {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    margin-right: 8px;
+    flex-shrink: 0;
+  }
+  
+  &-listItemText {
+    display: none;
+    position: absolute;
+    left: -40px;
+    opacity: 0;
+    visibility: hidden;
+    padding: 0.35rem 0.85rem;
+    border-radius: 4px;
+    background-color: var(--main-container-bg);
+    font-size: 12px;
+    white-space: nowrap;
+    box-shadow: var(--container-shadow);
+    transition: all .3s ease;
+    color: var(--text-color);
+    z-index: 10;
+  }
+
+  &-userProfile {
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid var(--item-hover);
+  }
+
+  &-userMenu {
+    position: relative;
+  }
+
+  &-userButton {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: var(--text-color);
+    border-radius: 4px;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background-color: var(--item-hover);
+    }
+
+    svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    .shrink & {
+      justify-content: center;
+      padding: 12px 8px;
+    }
+  }
+
+  &-userInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: 0;
+
+    .shrink & {
+      display: none;
+    }
+  }
+
+  &-userName {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &-userRole {
+    font-size: 12px;
+    color: var(--text-color);
+    opacity: 0.7;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &-userDropdown {
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    right: 0;
+    margin-bottom: 8px;
+    background-color: var(--main-container-bg);
+    border: 1px solid var(--item-hover);
+    border-radius: 4px;
+    box-shadow: var(--container-shadow);
+    overflow: hidden;
+  }
+
+  &-dropdownItem {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: var(--text-color);
+    text-align: left;
+    font-size: 14px;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background-color: var(--item-hover);
+    }
+  }
+}
+
+@keyframes fadeInItem {
+  from {
+    transform: translatex(-16px);
+    opacity: 0;
+  }
+  to {
+    transform: translatex(0);
+    opacity: 1;
+  }
+}

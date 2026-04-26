@@ -1,0 +1,101 @@
+.settings-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.settings-container.shrink {
+  /* no need for width calc, flex handles it */
+}
+
+.settings-header {
+  flex-shrink: 0;
+  margin-bottom: 1rem;
+}
+
+.settings-tabs {
+  position: sticky;
+  top: 0;
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--item-hover);
+  margin: 0;
+  padding: 0;
+  background-color: var(--main-bg);
+  z-index: 10;
+  flex-shrink: 0;
+}
+
+.settings-tab {
+  padding: 0.5rem 0.75rem;
+  border: none;
+  border-bottom: 3px solid transparent;
+  background: transparent;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--text-color);
+  transition: all 0.3s ease;
+  border-radius: 0;
+  text-align: center;
+  white-space: nowrap;
+  flex: 0 1 auto;
+  opacity: 0.7;
+}
+
+.settings-tab:hover {
+  opacity: 1;
+  background-color: var(--item-hover);
+}
+
+.settings-tab.active {
+  border-bottom-color: var(--secondary-bg);
+  color: var(--text-color);
+  opacity: 1;
+  font-weight: 600;
+}
+
+.settings-content-wrapper {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.settings-content {
+  padding: 1rem 0;
+}
+
+.admin-user-tab{
+  display: grid;
+  gap: 1rem;
+}
+
+.admin-user-card{
+  margin-top: 10px;
+  background: rgba(223, 219, 219, 0.241);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(125, 122, 122, 0.1);
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.admin-user-toolbar{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.admin-user-toolbar-left{
+  display: flex;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+}
+
+.admin-user-tool-btn{
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid var(--item-hover);
+}

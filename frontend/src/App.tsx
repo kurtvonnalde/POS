@@ -1,14 +1,14 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import Login from "./app/Login";
-import Register from "./component/users/Registration";
-import Products from "./app/pages/products/Products";
-import Sales from "./app/pages/sales/Sales";
-import Inventory from "./app/pages/inventory/Inventory";
-import Reports from "./app/pages/reports/Reports";
-import Settings from "./app/pages/settings/Settings";
-import ProtectedRoute from "./component/ProtectedRoute";
-import AppLayout from "./component/AppLayout";
-import AuthLayout from "./component/AuthLayout";
+import Login from "./pages/Auth/Login/Login";
+import Register from "./components/common/users/Registration/Registration";
+import Products from "./pages/Products/Products";
+import Sales from "./pages/Sales/Sales";
+import Inventory from "./pages/Inventory/Inventory";
+import Reports from "./pages/Reports/Reports";
+import Settings from "./pages/Settings/Settings";
+import ProtectedRoute from "./components/common/ProtectedRoute";
+import AppLayout from "./components/layout/AppLayout/AppLayout";
+import AuthLayout from "./components/layout/AuthLayout";
 
 function App() {
   return (

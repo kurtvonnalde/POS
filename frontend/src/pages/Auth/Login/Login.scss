@@ -1,0 +1,128 @@
+
+/* Parent wrapper covers the whole page */
+.login-main {
+  display: flex;
+  height: 100vh;   /* full screen height */
+  width: 100vw;    /* full screen width */
+}
+
+/* Container holds left + right */
+.login-container {
+  display: flex;
+  flex: 1;         /* take full space */
+  height: 100%;
+  width: 100%;
+}
+
+/* Left side = 70% */
+.login-left {
+  flex: 0 0 70%;   /* fixed at 70% width */
+  background-color: #E9E9E9;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-left img {
+  width: 400px;
+}
+
+/* Right side = 30% */
+.login-right {
+  flex: 0 0 30%;   /* fixed at 30% width */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-right-container {
+  height: 100%;
+  width: 80%;
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+  
+  .login-right form{
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .login-logo{
+    align-self: center;
+    padding-top: 50px;
+  }
+  
+  .login-center{
+    margin: auto 0;
+  }
+  
+  .login-logo img{
+    width: 50px;
+  }
+  
+  .login-center h2{
+    font-size: 35px;
+  }
+  
+  .login-center{
+    text-align: center;
+  }
+  
+  .login-center p{
+    font-weight: 400;
+    font-size: 20px;
+    margin-bottom: 40px;
+  }
+  
+  form input[type='email'],
+  form input[type='password'],
+  form input[type='text']
+   {
+    width: 100%;
+    padding: 16px;
+    margin-bottom: 16px;
+    border: 0px;
+    border-bottom: 1px solid black;
+    outline: none;
+    box-sizing: border-box;
+  }
+  
+  .pass-input-div{
+    position: relative;
+  }
+  
+  .pass-input-div svg{
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+  }
+  
+  .login-center-buttons{
+    margin-top: 30px;
+  }
+  
+  .login-center-buttons button{
+    width: 100%;
+    padding: 16px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 4px;
+    transition: 0.3s ease;
+  }
+  
+  .login-center-buttons button:hover{
+    background-color: #333;
+  }
