@@ -100,6 +100,16 @@ export default function Header({
         <FaArrowCircleLeft />
       </button>
       <div className="sidebar-logo">KrawlPOS</div>
+      
+      <button
+        className="sidebar-themeToggle"
+        onClick={handleThemeChange}
+        title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
+        aria-label={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
+      >
+        {isDarkMode ? <FaSun size={18} /> : <FaMoon size={18} />}
+      </button>
+
       <ul className="sidebar-list">
         <li className={`sidebar-listItem ${isActive("/products") ? "active" : ""}`}>
           <Link to="/products">
@@ -137,25 +147,6 @@ export default function Header({
           <span className="sidebar-listItemText">Settings</span>
         </li>
       </ul>
-
-      <div className="sidebar-themeContainer">
-        <label className="sidebar-themeLabel">
-          <input
-            type="checkbox"
-            className="sidebar-themeInput"
-            checked={isDarkMode}
-            onChange={handleThemeChange}
-          />
-          <span className="sidebar-themeType light">
-            <FaSun />
-            <span className="sidebar-themeInputText">Light</span>
-          </span>
-          <span className="sidebar-themeType dark">
-            <FaMoon />
-            <span className="sidebar-themeInputText">Dark</span>
-          </span>
-        </label>
-      </div>
 
       <div className="sidebar-userProfile">
         <div ref={userMenuRef} className="sidebar-userMenu">

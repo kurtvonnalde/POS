@@ -43,88 +43,32 @@
     .shrink & { display: none; }
   }
 
-  
-  &-themeInput {
-    opacity: 0;
-    width: 0;
-    height: 0;
-    position: absolute;
-  }
-  
-  &-themeInputText {
-    font-size: 14px;
-    opacity: 1;
-    transform: translatex(0);
-    transition: .2s ease-in-out;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    .shrink & {
-      width: 0;
-      opacity: 0;
-      transform: translatex(-8px);
-    }
-  }
-  
-  &-themeType {
-    width: 50%;
+  &-themeToggle {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    background-color: var(--main-bg);
+    color: var(--text-color);
+    border-radius: 4px;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 12px 8px;
-    text-align: center;
-    z-index: 1;
+    transition: background-color 0.2s ease;
+    margin-bottom: 16px;
     flex-shrink: 0;
-    line-height: 20px;
-    
-    .shrink & {
-      width: 100%;
-    }
-  }
-  
-  &-themeContainer {
-    padding: 4px;
-    border-radius: 4px;
-    color: var(--text-color);
-    overflow: hidden;
-    background-color: var(--main-bg);
-    overflow: hidden;
-    flex-shrink: 0;
-  }
-  
-  &-themeLabel {
-    display: flex;
-    justify-content: space-between;
-    position: relative;
-    cursor: pointer;
-    
-    svg { width: 18px; height: 18px; }
-    &.switched {
-      .shrink & .light { display: none; }
-      &:before {
-        left: 50%;
-        .shrink & { left: 2px; }
-      }
+
+    &:hover {
+      background-color: var(--item-hover);
     }
 
-    &:not(.switched) .shrink & .dark { display: none; }
-    &:before {
-      content: "";
-      position: absolute;
-      z-index: 0;
-      display: inline-block;
-      width: calc(50% - 2px);
-      height: calc(100% - 4px);
-      border-radius: 4px;
-      background-color: var(--main-container-bg);
-      left: 2px;
-      top: 50%;
-      transform: translatey(-50%);
-      transition: left .3s ease;
-      
-      .shrink & { width: calc(100% - 4px); }
+    svg {
+      width: 20px;
+      height: 20px;
     }
   }
+
+
   
   &-viewButton {
     position: absolute;
@@ -189,6 +133,9 @@
       display: flex;
       align-items: center;
       cursor: pointer;
+      color: var(--text-color);
+      text-decoration: none;
+      transition: all 0.2s ease;
     }
   }
   

@@ -6,9 +6,9 @@ import Sales from "./pages/Sales/Sales";
 import Inventory from "./pages/Inventory/Inventory";
 import Reports from "./pages/Reports/Reports";
 import Settings from "./pages/Settings/Settings";
-import ProtectedRoute from "./components/common/ProtectedRoute";
 import AppLayout from "./components/layout/AppLayout/AppLayout";
-import AuthLayout from "./components/layout/AuthLayout";
+import { ProtectedRoute } from "./components/common";
+import { AuthLayout } from "./components/layout";
 
 function App() {
   return (
@@ -72,7 +72,7 @@ function App() {
         element={
           <ProtectedRoute requiredRole="admin">
             <AppLayout>
-              <Settings isSidebarCollapsed={true} />
+              <Settings />
             </AppLayout>
           </ProtectedRoute>
         }

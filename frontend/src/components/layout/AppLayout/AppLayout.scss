@@ -1,37 +1,30 @@
 .app-layout {
   display: flex;
   min-height: 100vh;
+  background-color: var(--main-bg);
 }
 
-/* Sidebar */
-.sidebar-container {
-  width: 240px;
-  transition: width 0.3s ease;
-}
-
-.sidebar-container.shrink {
-  width: 92px;
-}
-
-/* Content area - accounts for fixed sidebar */
-.content-area {
+/* Main content area - accounts for fixed sidebar */
+.main-content {
   flex: 1;
   display: flex;
   flex-direction: column;
   margin-left: 240px;
   transition: margin-left 0.3s ease;
   min-height: 100vh;
+  background-color: var(--main-bg);
 }
 
-.content-area.collapsed {
+.main-content.collapsed {
   margin-left: 92px;
 }
 
-/* Content container */
-.settings-container {
-  flex: 1;                /* take all remaining space */
+/* Main content wrapper */
+.main-content-wrapper {
+  flex: 1;
   padding: 1rem;
   background-color: var(--main-bg);
   color: var(--text-color);
   transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-y: auto;
 }

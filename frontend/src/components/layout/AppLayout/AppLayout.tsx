@@ -14,8 +14,8 @@ export default function AppLayout({ children }: { children: ReactNode }) {
         isSidebarCollapsed={isSidebarCollapsed}
         setIsSidebarCollapsed={setIsSidebarCollapsed}
       />
-      <div className={`content-area ${isSidebarCollapsed ? 'collapsed' : ''}`}>
-        <main className="settings-container">
+      <div className={`main-content ${isSidebarCollapsed ? 'collapsed' : ''}`}>
+        <main className="main-content-wrapper">
           {children}
         </main>
         <Footer />
