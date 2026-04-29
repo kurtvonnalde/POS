@@ -5,29 +5,27 @@ interface DeleteConfirmationModalProps {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
+  username?: string;
 }
 
 export default function DeleteConfirmationModal({
   isOpen,
   onClose,
   onConfirm,
+  username,
 }: DeleteConfirmationModalProps) {
-  if (!isOpen) return null; // don't render anything if modal is closed
+  if (!isOpen) return null;
 
   return (
-    <div
-      className="register-modal-overlay"
-      style={{ display: isOpen ? "flex" : "none" }}
-      onClick={onClose}
-    >
-      <div className="register-modal" onClick={(e) => e.stopPropagation()}>
-        <div className="registration-header">
+    <div className="manage-user-modal-overlay" onClick={onClose}>
+      <div className="manage-user-modal manage-user-modal--danger" onClick={(e) => e.stopPropagation()}>
+        <div className="manage-user-modal__header">
           <div>
             <h2>Delete User</h2>
-            <p>Are you sure you want to delete this user?</p>
+            <p>This action is permanent and cannot be undone.</p>
           </div>
           <button
-            className="registration-modal-close"
+            className="manage-user-modal__close"
             type="button"
             onClick={onClose}
             aria-label="Close modal"
@@ -35,12 +33,30 @@ export default function DeleteConfirmationModal({
             <FaTimes />
           </button>
         </div>
-        <div>
-          <button className="confirm-button" onClick={onConfirm}>
-            Yes, Delete
-          </button>
-          <button className="cancel-button" onClick={onClose}>
+
+        <div className="manage-user-modal__body">
+          <p>
+            You are about to remove
+            {" "}
+            <strong>{username || "this user"}</strong>
+            .
+          </p>
+        </div>
+
+        <div className="manage-user-modal__actions">
+          <button
+            className="manage-user-modal__button manage-user-modal__button--secondary"
+            onClick={onClose}
+            type="button"
+          >
             Cancel
+          </button>
+          <button
+            className="manage-user-modal__button manage-user-modal__button--danger"
+            onClick={onConfirm}
+            type="button"
+          >
+            Delete User
           </button>
         </div>
       </div>

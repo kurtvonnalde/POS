@@ -14,6 +14,12 @@ interface User {
   role: string;
 }
 
+interface UserUpdatePayload {
+  username: string;
+  full_name: string;
+  role: string;
+}
+
 export default function ManageUsers() {
   const {
     warning: showWarning,
@@ -30,6 +36,8 @@ export default function ManageUsers() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+  const selectedUser = users.find((user) => user.user_id === selectedUserId) ?? null;
 
   const fetchUsers = async () => {
     try {
@@ -111,6 +119,61 @@ export default function ManageUsers() {
     }
 
     setIsDeleteModalOpen(false);
+    setSelectedUserId(null);
+  };
+
+  const handleEditSave = async (payload: UserUpdatePayload) => {
+    if (!selectedUserId) {
+      showWarning({
+        title: "No user selected",
+        message: "Please choose a user before editing.",
+      });
+      setIsEditModalOpen(false);
+      return;
+    }
+
+    try {
+      const response = await axios.patch(
+        `http://localhost:8000/app_user/${selectedUserId}`,
+        null,
+        {
+          params: {
+            username: payload.username,
+            full_name: payload.full_name,
+            role: payload.role,
+          },
+        },
+      );
+
+      const updatedUser = response.data as User;
+
+      setUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          user.user_id === selectedUserId
+            ? {
+                ...user,
+                username: updatedUser.username,
+                full_name: updatedUser.full_name,
+                role: updatedUser.role,
+              }
+            : user,
+        ),
+      );
+
+      notifyApiSuccess({
+        title: "User updated",
+        message: "User details were updated successfully.",
+      });
+    } catch (err) {
+      appLogger.error("Error updating user", err, { userId: selectedUserId });
+      notifyApiError(err, {
+        title: "Update failed",
+        fallbackMessage: "Unable to update the selected user.",
+      });
+      return;
+    }
+
+    setIsEditModalOpen(false);
     setSelectedUserId(null);
   };
 
@@ -234,17 +297,23 @@ export default function ManageUsers() {
       />
 
       <DeleteConfirmationModal
-      isOpen={isDeleteModalOpen}
-      onClose={() => setIsDeleteModalOpen(false)}
-      onConfirm={() => handleDelete(selectedUserId!)}
-/>
+        isOpen={isDeleteModalOpen}
+        onClose={() => {
+          setIsDeleteModalOpen(false);
+          setSelectedUserId(null);
+        }}
+        onConfirm={() => handleDelete(selectedUserId!)}
+        username={selectedUser?.username}
+      />
+
       <EditUserModal
         isOpen={isEditModalOpen}
-        onClose={() => setIsEditModalOpen(false)}
-        onConfirm={() => {
-          // Implement edit functionality here
+        onClose={() => {
           setIsEditModalOpen(false);
+          setSelectedUserId(null);
         }}
+        user={selectedUser}
+        onConfirm={handleEditSave}
       />
 
     </div>

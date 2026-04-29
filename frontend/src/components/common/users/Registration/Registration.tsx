@@ -109,17 +109,20 @@ export default function Registration({
   }
 };
 
+  if (!isOpen) {
+    return null;
+  }
 
   return (
     <div
       className="register-modal-overlay"
-      style={{ display: isOpen ? "flex" : "none" }}
       onClick={handleClose}
     >
       <div className="register-modal" onClick={(e) => e.stopPropagation()}>
         <div className="registration-header">
           <div>
             <h2>Create User</h2>
+            <p>Fill in account details and assign an access role.</p>
           </div>
           <button
             className="registration-modal-close"
@@ -130,7 +133,11 @@ export default function Registration({
             <FaTimes />
           </button>
         </div>
+
         <form className="registration-form" onSubmit={handleSubmit}>
+          <div className="registration-block">
+            <h3>Identity</h3>
+
           <div className="registration-form-grid">
             <div className="registration-field">
               <label htmlFor="username">Username</label>
@@ -160,6 +167,10 @@ export default function Registration({
               )}
             </div>
           </div>
+          </div>
+
+          <div className="registration-block">
+            <h3>Security</h3>
 
           <div className="registration-form-grid">
             <div className="registration-field">
@@ -190,31 +201,46 @@ export default function Registration({
               )}
             </div>
           </div>
+          </div>
 
-          <div className="registration-field full-width">
-            <label htmlFor="role">Role</label>
-            <select
-              id="role"
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-            >
-              <option value="cashier">Cashier</option>
-              <option value="admin">Admin</option>
-              <option value="manager">Manager</option>
-              <option value="viewer">Viewer</option>
-            </select>
-            {errors.role && (
-              <span className="registration-error">{errors.role}</span>
-            )}
+          <div className="registration-block">
+            <h3>Access</h3>
+
+            <div className="registration-field full-width">
+              <label htmlFor="role">Role</label>
+              <select
+                id="role"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+              >
+                <option value="cashier">Cashier</option>
+                <option value="admin">Admin</option>
+                <option value="manager">Manager</option>
+                <option value="viewer">Viewer</option>
+              </select>
+              {errors.role && (
+                <span className="registration-error">{errors.role}</span>
+              )}
+            </div>
           </div>
 
           {errors.submit && (
             <div className="registration-error full-width">{errors.submit}</div>
           )}
 
-          <button type="submit" className="registration-submit" disabled={isLoading}>
-            {isLoading ? "Saving..." : "Register"}
-          </button>
+          <div className="registration-actions">
+            <button
+              type="button"
+              className="registration-cancel"
+              onClick={handleClose}
+              disabled={isLoading}
+            >
+              Cancel
+            </button>
+            <button type="submit" className="registration-submit" disabled={isLoading}>
+              {isLoading ? "Saving..." : "Register"}
+            </button>
+          </div>
         </form>
       </div>
     </div>

@@ -1,148 +1,215 @@
-.register-modal-overlay{
-    position: fixed;
-    inset: 0;
-    z-index: 2000;
-    backdrop-filter: blur(6px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    background-color: rgba(0, 0, 0, 0.3);
+.register-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
-.register-modal{
-    width: min(90%, 450px);
-    max-height: 90vh;
-    overflow-y: auto;
-    border-radius: 16px;
-    border: 1px solid rgba(125, 122, 122, 0.15);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-    padding: 2rem;
-    background-color: var(--main-container-bg);
+.register-modal {
+  width: min(92%, 620px);
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 20px;
+  border: 1px solid var(--item-hover);
+  box-shadow: var(--container-shadow);
+  padding: 1.7rem;
+  background-color: var(--main-container-bg);
 }
 
-.registration-header{
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 1rem;
-    margin-bottom: 1.75rem;
-    padding-bottom: 1.25rem;
-    border-bottom: 2px solid var(--item-hover);
+.registration-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.3rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--item-hover);
 }
 
-.registration-header h2{
-    margin: 0;
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: var(--text-color);
+.registration-header h2 {
+  margin: 0;
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--text-color);
 }
 
-
-.registration-header p{
-    margin: 0.35rem 0 0;
-    color: var(--text-color);
-    opacity: 0.8;
-    font-size: 0.9rem;
+.registration-header p {
+  margin: 0.45rem 0 0;
+  color: var(--text-color);
+  opacity: 0.72;
+  font-size: 0.9rem;
+  max-width: 42ch;
 }
 
-.registration-modal-close{
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    border: 1px solid rgba(125, 122, 122, 0.1);
-    cursor: pointer;
-    background: transparent;
-    color: var(--text-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.1rem;
-    transition: all 0.2s ease;
-    flex-shrink: 0;
+.registration-modal-close {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid rgba(125, 122, 122, 0.1);
+  cursor: pointer;
+  background: transparent;
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.05rem;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
 }
 
-.registration-modal-close:hover{
-    background-color: var(--item-hover);
-    border-color: var(--item-hover);
-    transform: rotate(90deg);
+.registration-modal-close:hover {
+  background-color: var(--item-hover);
+  border-color: var(--item-hover);
+  transform: rotate(90deg);
 }
 
-.registration-form{
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+.registration-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
 }
 
-.registration-form-grid{
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.25rem;
+.registration-block {
+  border: 1px solid var(--item-hover);
+  border-radius: 14px;
+  padding: 0.95rem;
+  background: color-mix(in srgb, var(--main-bg) 62%, var(--main-container-bg));
 }
 
-.registration-field{
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
+.registration-block h3 {
+  margin: 0 0 0.8rem;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-color);
+  opacity: 0.75;
 }
 
-.registration-field.full-width{
-    grid-column: 1/-1;
+.registration-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
 }
 
+.registration-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
 
-.registration-field label{
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--text-color);
+.registration-field.full-width {
+  grid-column: 1 / -1;
+}
+
+.registration-field label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+  font-weight: 600;
+  color: var(--text-color);
 }
 
 .registration-field input,
-.registration-field select{
-    padding: 0.75rem;
-    border: 1px solid var(--item-hover);
-    border-radius: 6px;
-    background-color: var(--main-bg);
-    color: var(--text-color);
-    font-family: inherit;
-    font-size: 0.9rem;
-    transition: all 0.2s ease;
+.registration-field select {
+  padding: 0.72rem 0.8rem;
+  border: 1px solid var(--item-hover);
+  border-radius: 10px;
+  background-color: var(--main-bg);
+  color: var(--text-color);
+  font-family: inherit;
+  font-size: 0.88rem;
+  transition: all 0.2s ease;
 }
 
 .registration-field input:focus,
-.registration-field select:focus{
-    outline: none;
-    border-color: var(--secondary-bg);
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+.registration-field select:focus {
+  outline: none;
+  border-color: var(--secondary-bg);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
-.registration-error{
-    color: #ef4444;
-    font-size: 0.8rem;
-    margin-top: 0.25rem;
+.registration-error {
+  color: #ef4444;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
 }
 
-.registration-submit{
-    padding: 0.875rem 1.5rem;
-    background-color: var(--secondary-bg);
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 0.95rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    margin-top: 1rem;
+.registration-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.7rem;
+  margin-top: 0.35rem;
 }
 
-.registration-submit:hover{
-    opacity: 0.9;
-    transform: translateY(-1px);
+.registration-cancel,
+.registration-submit {
+  padding: 0.72rem 1.05rem;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
 }
 
-.registration-submit:active{
-    transform: translateY(0);
+.registration-cancel {
+  border: 1px solid var(--item-hover);
+  background-color: var(--main-bg);
+  color: var(--text-color);
+}
+
+.registration-submit {
+  background-color: var(--secondary-bg);
+  color: #fff;
+  min-width: 130px;
+}
+
+.registration-cancel:hover,
+.registration-submit:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.registration-cancel:disabled,
+.registration-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.registration-cancel:active,
+.registration-submit:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .register-modal-overlay {
+    padding: 1rem;
+  }
+
+  .register-modal {
+    width: min(100%, 620px);
+    border-radius: 14px;
+    padding: 1rem;
+  }
+
+  .registration-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .registration-actions {
+    flex-direction: column-reverse;
+  }
+
+  .registration-cancel,
+  .registration-submit {
+    width: 100%;
+  }
 }
