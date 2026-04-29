@@ -25,6 +25,10 @@
     width: 240px;
     height: 100vh;   // full height of viewport
     max-height: 100vh; // ensure it fills the screen
+    
+    // Add flex layout to make user profile stick to bottom
+    display: flex;
+    flex-direction: column;
   
     &.shrink {
       width: 92px;
