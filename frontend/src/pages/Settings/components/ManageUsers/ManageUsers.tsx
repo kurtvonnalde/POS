@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { Pencil, Plus, RefreshCw, Search, Trash } from "lucide-react";
 import Registration from "../../../../components/common/users/Registration/Registration";
+import { useApiNotifier, useNotifications } from "../../../../components/common";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
+import { appLogger } from "../../../../utils/logger";
 
 interface User {
   user_id: number;
@@ -12,6 +14,11 @@ interface User {
 }
 
 export default function ManageUsers() {
+  const {
+    warning: showWarning,
+    info: showInfo,
+  } = useNotifications();
+  const { notifyApiSuccess, notifyApiError } = useApiNotifier();
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -20,6 +27,7 @@ export default function ManageUsers() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const itemsPerPage = 5;
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
 
   const fetchUsers = async () => {
     try {
@@ -27,8 +35,19 @@ export default function ManageUsers() {
       const res = await axios.get("http://localhost:8000/app_user");
       setUsers(res.data);
       setCurrentPage(1);
-    } catch (error) {
-      console.error("Error fetching users:", error);
+
+      if (res.data.length === 0) {
+        showInfo({
+          title: "No users found",
+          message: "There are no registered users yet.",
+        });
+      }
+    } catch (err) {
+      appLogger.error("Error fetching users", err);
+      notifyApiError(err, {
+        title: "Fetch failed",
+        fallbackMessage: "Unable to fetch users right now.",
+      });
     } finally {
       setLoading(false);
     }
@@ -64,20 +83,34 @@ export default function ManageUsers() {
   };
 
   const handleDelete = async (userId: number) => {
-    if (window.confirm("Are you sure you want to delete this user?")) {
-      try {
-        await axios.delete(`http://localhost:8000/app_user/${userId}`);
-        setUsers(users.filter((user) => user.user_id !== userId));
-      } catch (error) {
-        console.error("Error deleting user:", error);
-      }
+    if (!userId) {
+      showWarning({
+        title: "No user selected",
+        message: "Please choose a user before deleting.",
+      });
+      setIsDeleteModalOpen(false);
+      return;
     }
-    
+
+    try {
+      await axios.delete(`http://localhost:8000/app_user/${userId}`);
+      setUsers(users.filter((user) => user.user_id !== userId));
+
+      notifyApiSuccess({
+        title: "User deleted",
+        message: "The user account was removed successfully.",
+      });
+    } catch (err) {
+      appLogger.error("Error deleting user", err, { userId });
+      notifyApiError(err, {
+        title: "Delete failed",
+        fallbackMessage: "Unable to delete the selected user.",
+      });
+    }
 
     setIsDeleteModalOpen(false);
+    setSelectedUserId(null);
   };
-
-  const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
 
   return (
     <div className="admin-user-tab">
@@ -187,6 +220,11 @@ export default function ManageUsers() {
         onClose={() => setIsModalOpen(false)}
         onSaved={(newUser) => {
           setUsers([...users, newUser]);
+
+          notifyApiSuccess({
+            title: "User created",
+            message: "A new user has been added successfully.",
+          });
         }}
       />
 

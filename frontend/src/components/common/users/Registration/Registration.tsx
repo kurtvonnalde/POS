@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./Registration.scss";
 import { FaTimes } from "react-icons/fa";
+import { useApiNotifier, useNotifications } from "../../";
 
 interface RegistrationProps {
   isOpen: boolean;
@@ -16,6 +17,8 @@ export default function Registration({
   onClose,
   onSaved,
 }: RegistrationProps) {
+  const { warning: showWarning } = useNotifications();
+  const { notifyApiSuccess, notifyApiError } = useApiNotifier();
   const [username, setUsername] = useState("");
   const [full_name, setFullName] = useState("");
   const [password, setPassword] = useState("");
@@ -63,6 +66,10 @@ export default function Registration({
 
   if (Object.keys(newErrors).length > 0) {
     setErrors(newErrors);
+    showWarning({
+      title: "Incomplete form",
+      message: "Please review the required fields before submitting.",
+    });
     return;
   }
 
@@ -78,15 +85,25 @@ export default function Registration({
 
     const data = response.data;
     setErrors({});
-    alert(data.message || "Registration successful");
+    notifyApiSuccess({
+      title: "Registration successful",
+      message: data.message || "The user account has been created.",
+    });
     onSaved(data);
     handleClose();
   } catch (error: any) {
-    if (error.response) {
-      setErrors({ submit: error.response.data.detail || "Registration failed" });
-    } else {
-      setErrors({ submit: "Network error, please try again" });
-    }
+    const isNetworkIssue = !axios.isAxiosError(error) || !error.response;
+    const title = isNetworkIssue ? "Network error" : "Registration failed";
+    const fallbackMessage = isNetworkIssue
+      ? "Network error, please try again"
+      : "Registration failed";
+
+    const message = notifyApiError(error, {
+      title,
+      fallbackMessage,
+    });
+
+    setErrors({ submit: message });
   } finally {
     setIsLoading(false);
   }

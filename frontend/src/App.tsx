@@ -1,6 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Auth/Login/Login";
-import Register from "./components/common/users/Registration/Registration";
 import Products from "./pages/Products/Products";
 import Sales from "./pages/Sales/Sales";
 import Inventory from "./pages/Inventory/Inventory";

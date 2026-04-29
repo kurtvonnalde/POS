@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./Settings.scss";
 import { ManageUsers, ManageSupplier, ManageInventory, ManageCategories } from "./components";
 

@@ -1,5 +1,7 @@
 import React, { useEffect, useState, type JSX } from "react";
 import { Navigate } from "react-router-dom";
+import { useApiNotifier, useNotifications } from "./";
+import { appLogger } from "../../utils/logger";
 
 interface ProtectedRouteProps {
   children: JSX.Element;
@@ -9,6 +11,8 @@ interface ProtectedRouteProps {
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredRole }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [userRole, setUserRole] = useState<string | null>(null);
+  const { info: showInfo } = useNotifications();
+  const { notifyApiError } = useApiNotifier();
 
   useEffect(() => {
     const validateToken = async () => {
@@ -39,10 +43,18 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredRole 
           // Token is invalid or expired
           localStorage.removeItem("token");
           localStorage.removeItem("username");
+          showInfo({
+            title: "Session expired",
+            message: "Please log in again to continue.",
+          });
           setIsAuthenticated(false);
         }
-      } catch (error) {
-        console.error("Token validation error:", error);
+      } catch (err) {
+        appLogger.error("Token validation error", err);
+        notifyApiError(err, {
+          title: "Authentication check failed",
+          fallbackMessage: "Unable to verify your session. Please log in again.",
+        });
         // On error, assume token is invalid for safety
         localStorage.removeItem("token");
         localStorage.removeItem("username");
