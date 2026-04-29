@@ -3,6 +3,7 @@ import axios from "axios";
 import { Pencil, Plus, RefreshCw, Search, Trash } from "lucide-react";
 import Registration from "../../../../components/common/users/Registration/Registration";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
+import EditUserModal from "./EditUserModal";
 
 interface User {
   user_id: number;
@@ -20,6 +21,7 @@ export default function ManageUsers() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const itemsPerPage = 5;
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const fetchUsers = async () => {
     try {
@@ -144,7 +146,10 @@ export default function ManageUsers() {
                     <td>{user.full_name}</td>
                     <td>{user.role}</td>
                     <td>
-                      <button>
+                      <button onClick={() => {
+                        setSelectedUserId(user.user_id);
+                        setIsEditModalOpen(true);
+                      }}>
                         <Pencil size={16} />
                       </button>
                       <button onClick={() => {
@@ -195,6 +200,14 @@ export default function ManageUsers() {
       onClose={() => setIsDeleteModalOpen(false)}
       onConfirm={() => handleDelete(selectedUserId!)}
 />
+      <EditUserModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        onConfirm={() => {
+          // Implement edit functionality here
+          setIsEditModalOpen(false);
+        }}
+      />
 
     </div>
   );
