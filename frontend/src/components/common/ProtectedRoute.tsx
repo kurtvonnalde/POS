@@ -3,6 +3,8 @@ import { Navigate } from "react-router-dom";
 import { useApiNotifier, useNotifications } from "./";
 import { appLogger } from "../../utils/logger";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
+
 interface ProtectedRouteProps {
   children: JSX.Element;
   requiredRole?: string | string[]; // Optional: specify required role(s)
@@ -26,7 +28,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredRole 
 
       try {
         // Validate token with backend
-        const response = await fetch("http://localhost:8000/auth/verify", {
+        const response = await fetch(`${API_BASE_URL}/auth/verify`, {
           method: "GET",
           headers: {
             "Authorization": `Bearer ${token}`,
