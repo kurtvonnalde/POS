@@ -7,6 +7,8 @@ import DeleteConfirmationModal from "./DeleteConfirmationModal";
 import { appLogger } from "../../../../utils/logger";
 import EditUserModal from "./EditUserModal";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
+
 interface User {
   user_id: number;
   username: string;
@@ -42,7 +44,7 @@ export default function ManageUsers() {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("http://localhost:8000/app_user");
+      const res = await axios.get(`${API_BASE_URL}/app_user`);
       setUsers(res.data);
       setCurrentPage(1);
 
@@ -103,7 +105,7 @@ export default function ManageUsers() {
     }
 
     try {
-      await axios.delete(`http://localhost:8000/app_user/${userId}`);
+      await axios.delete(`${API_BASE_URL}/app_user/${userId}`);
       setUsers(users.filter((user) => user.user_id !== userId));
 
       notifyApiSuccess({
@@ -134,7 +136,7 @@ export default function ManageUsers() {
 
     try {
       const response = await axios.patch(
-        `http://localhost:8000/app_user/${selectedUserId}`,
+        `${API_BASE_URL}/app_user/${selectedUserId}`,
         null,
         {
           params: {

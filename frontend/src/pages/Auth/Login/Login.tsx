@@ -4,6 +4,8 @@ import { FaEyeSlash } from "react-icons/fa6";
 import { useApiNotifier, useNotifications } from "../../../components/common";
 import "./Login.scss";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
+
 const Login: React.FC = () => {
   const { warning: showWarning } = useNotifications();
   const { notifyApiSuccess, notifyApiError } = useApiNotifier();
@@ -26,7 +28,7 @@ const Login: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch("http://localhost:8000/auth/login", {
+      const response = await fetch(`${API_BASE_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),

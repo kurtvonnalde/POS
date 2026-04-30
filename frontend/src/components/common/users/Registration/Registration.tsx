@@ -6,6 +6,8 @@ import "./Registration.scss";
 import { FaTimes } from "react-icons/fa";
 import { useApiNotifier, useNotifications } from "../../";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
+
 interface RegistrationProps {
   isOpen: boolean;
   onClose: () => void;
@@ -76,7 +78,7 @@ export default function Registration({
   setIsLoading(true);
 
   try {
-    const response = await axios.post("http://localhost:8000/auth/register", {
+    const response = await axios.post(`${API_BASE_URL}/auth/register`, {
       username,
       full_name,
       password,
