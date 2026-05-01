@@ -1,4 +1,4 @@
-.manage-user-modal-overlay {
+.edit-supplier-modal-overlay {
 	position: fixed;
 	inset: 0;
 	z-index: 2000;
@@ -10,7 +10,7 @@
 	padding: 1rem;
 }
 
-.manage-user-modal {
+.edit-supplier-modal {
 	width: min(92vw, 560px);
 	max-height: 90vh;
 	overflow-y: auto;
@@ -21,7 +21,7 @@
 	padding: 1.1rem;
 }
 
-.manage-user-modal__header {
+.edit-supplier-modal__header {
 	display: flex;
 	justify-content: space-between;
 	align-items: flex-start;
@@ -44,7 +44,7 @@
 	}
 }
 
-.manage-user-modal__close {
+.edit-supplier-modal__close {
 	width: 34px;
 	height: 34px;
 	border-radius: 10px;
@@ -63,19 +63,19 @@
 	}
 }
 
-.manage-user-modal__form {
+.edit-supplier-modal__form {
 	display: flex;
 	flex-direction: column;
 	gap: 0.9rem;
 }
 
-.manage-user-modal__grid {
+.edit-supplier-modal__grid {
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
 	gap: 0.85rem;
 }
 
-.manage-user-modal__field {
+.edit-supplier-modal__field {
 	display: flex;
 	flex-direction: column;
 	gap: 0.35rem;
@@ -101,19 +101,19 @@
 	}
 }
 
-.manage-user-modal__error {
+.edit-supplier-modal__error {
 	margin: 0;
 	color: #ef4444;
 	font-size: 0.8rem;
 }
 
-.manage-user-modal__actions {
+.edit-supplier-modal__actions {
 	display: flex;
 	justify-content: flex-end;
 	gap: 0.7rem;
 }
 
-.manage-user-modal__button {
+.edit-supplier-modal__button {
 	border: none;
 	border-radius: 10px;
 	padding: 0.72rem 1rem;
@@ -132,27 +132,27 @@
 	}
 }
 
-.manage-user-modal__button--primary {
+.edit-supplier-modal__button--primary {
 	background-color: var(--secondary-bg);
 	color: #fff;
 }
 
-.manage-user-modal__button--secondary {
+.edit-supplier-modal__button--secondary {
 	background-color: var(--main-bg);
 	color: var(--text-color);
 	border: 1px solid var(--item-hover);
 }
 
 @media (max-width: 720px) {
-	.manage-user-modal__grid {
+	.edit-supplier-modal__grid {
 		grid-template-columns: 1fr;
 	}
 
-	.manage-user-modal__actions {
+	.edit-supplier-modal__actions {
 		flex-direction: column-reverse;
 	}
 
-	.manage-user-modal__button {
+	.edit-supplier-modal__button {
 		width: 100%;
 	}
 }

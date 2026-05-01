@@ -7,9 +7,8 @@ import {
   useNotifications,
 } from "../../../../components/common";
 import DeleteConfirmationModal from "./DeleteSupplierConfirmationModal";
-import AddUserModal from "./AddSupplierModal";
 import AddSupplierModal from "./AddSupplierModal";
-
+import EditSupplierModal from "./EditSupplierModal";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
@@ -21,17 +20,23 @@ interface Supplier {
   phone: string;
 }
 
+interface SupplierUpdatePayload {
+  name: string;
+  contact_person: string;
+  email: string;
+  phone: string;
+}
+
 export default function ManageSupplier() {
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
   const [loading, setLoading] = useState(false);
   const { notifyApiSuccess, notifyApiError } = useApiNotifier();
   const { warning: showWarning, info: showInfo } = useNotifications();
-   const itemsPerPage = 5;
-   const [currentPage, setCurrentPage] = useState(1);
-   const [searchName, setSearchName] = useState("");
+  const itemsPerPage = 5;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchName, setSearchName] = useState("");
 
-
-   //get suppliers
+  //get suppliers
   const fetchSuppliers = async () => {
     try {
       setLoading(true);
@@ -68,7 +73,6 @@ export default function ManageSupplier() {
     setCurrentPage((prev) => Math.min(prev + 1, totalPages));
   };
 
-
   //search supplier implementation
   const handleSearch = () => {
     setCurrentPage(1);
@@ -90,7 +94,7 @@ export default function ManageSupplier() {
       setIsDeleteModalOpen(false);
       return;
     }
-    try{
+    try {
       await axios.delete(`${API_BASE_URL}/supplier/${supplierId}`);
       notifyApiSuccess({
         title: "Supplier deleted",
@@ -108,35 +112,88 @@ export default function ManageSupplier() {
     setSelectedSupplierId(null);
   };
 
-//delete function
+  //delete function
   const totalPages = Math.ceil(filteredSuppliers.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const paginatedSuppliers = filteredSuppliers.slice(startIndex, endIndex);
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [selectedSupplierId, setSelectedSupplierId] = useState<number | null>(null);
+  const [selectedSupplierId, setSelectedSupplierId] = useState<number | null>(
+    null,
+  );
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const selectedSupplier = suppliers.find(
-    (supplier) => supplier.supplier_id === selectedSupplierId
+    (supplier) => supplier.supplier_id === selectedSupplierId,
   );
-
-
 
   //add supplier function
   const [isModalAddOpen, setIsModalAddOpen] = useState(false);
 
+  //Edit Supplier function
+  const handleEditSave = async (payload: SupplierUpdatePayload) => {
+    if (!selectedSupplierId) {
+      showWarning({
+        title: "No supplier selected",
+        message: "Please select a supplier to edit.",
+      });
+      setIsEditModalOpen(false);
+      return;
+    }
+    try {
+      const response = await axios.patch(
+        `${API_BASE_URL}/supplier/${selectedSupplierId}`,
+        null,
+        {
+          params: {
+            name: payload.name,
+            contact_person: payload.contact_person,
+            email: payload.email,
+            phone: payload.phone,
+          },
+        },
+      );
+      const updatedSupplier = response.data as Supplier;
 
-
-
+      setSuppliers((prevSuppliers) =>
+        prevSuppliers.map((supplier) =>
+          supplier.supplier_id === selectedSupplierId
+            ? {
+                ...supplier,
+                name: updatedSupplier.name,
+                contact_person: updatedSupplier.contact_person,
+                email: updatedSupplier.email,
+                phone: updatedSupplier.phone,
+              }
+            : supplier,
+        ),
+      );
+      notifyApiSuccess({
+        title: "Supplier updated",
+        message: "Supplier details were updated successfully.",
+      });
+    } catch (err) {
+      appLogger.error("Error updating supplier", err, {
+        supplierId: selectedSupplierId,
+      });
+      notifyApiError(err, {
+        title: "Update failed",
+        fallbackMessage: "Unable to update the selected supplier.",
+      });
+      return;
+    }
+    setIsEditModalOpen(false);
+    setSelectedSupplierId(null);
+  };
 
   return (
     <div className="admin-user-tab">
       <div className="admin-user-card">
         <div className="admin-user-toolbar">
           <div className="admin-user-toolbar-left">
-            <button className="admin-user-tool-btn"
+            <button
+              className="admin-user-tool-btn"
               onClick={() => setIsModalAddOpen(true)}
             >
               <Plus size={16} />
@@ -154,10 +211,13 @@ export default function ManageSupplier() {
           <div className="admin-user-toolbar-right">
             <div className="admin-user-search">
               <Search size={16} />
-              <input type="text" placeholder="Search by Name"
+              <input
+                type="text"
+                placeholder="Search by Name"
                 value={searchName}
                 onChange={(e) => setSearchName(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleSearch()} />
+                onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+              />
             </div>
           </div>
         </div>
@@ -183,20 +243,24 @@ export default function ManageSupplier() {
                   <td>{supplier.contact_person}</td>
                   <td>{supplier.email}</td>
                   <td>{supplier.phone}</td>
-                   <td>
-                      <button onClick={() => {
+                  <td>
+                    <button
+                      onClick={() => {
                         setSelectedSupplierId(supplier.supplier_id);
                         setIsEditModalOpen(true);
-                      }}>
-                        <Pencil size={16} />
-                      </button>
-                      <button onClick={() => {
+                      }}
+                    >
+                      <Pencil size={16} />
+                    </button>
+                    <button
+                      onClick={() => {
                         setSelectedSupplierId(supplier.supplier_id);
                         setIsDeleteModalOpen(true);
-                      }}>
-                        <Trash size={16} />
-                      </button>
-                    </td>
+                      }}
+                    >
+                      <Trash size={16} />
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -222,7 +286,7 @@ export default function ManageSupplier() {
           Next
         </button>
       </div>
-<DeleteConfirmationModal
+      <DeleteConfirmationModal
         isOpen={isDeleteModalOpen}
         onClose={() => {
           setIsDeleteModalOpen(false);
@@ -243,7 +307,15 @@ export default function ManageSupplier() {
           });
         }}
       />
-
+      <EditSupplierModal
+        isOpen={isEditModalOpen}
+        onClose={() => {
+          setIsEditModalOpen(false);
+          setSelectedSupplierId(null);
+        }}
+        supplier={selectedSupplier as Supplier}
+        onConfirm={handleEditSave}
+      />
     </div>
   );
 }
