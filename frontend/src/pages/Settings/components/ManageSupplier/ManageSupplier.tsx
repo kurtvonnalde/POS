@@ -1,4 +1,4 @@
-import { Plus, RefreshCw, Search } from "lucide-react";
+import { Pencil, Plus, RefreshCw, Search, Trash } from "lucide-react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { appLogger } from "../../../../utils/logger";
@@ -6,6 +6,9 @@ import {
   useApiNotifier,
   useNotifications,
 } from "../../../../components/common";
+import DeleteConfirmationModal from "./DeleteSupplierConfirmationModal";
+
+
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
@@ -77,11 +80,48 @@ export default function ManageSupplier() {
     return nameMatch;
   });
 
+  const handleDelete = async (supplierId: number) => {
+    if (!supplierId) {
+      showWarning({
+        title: "No supplier selected",
+        message: "Please select a supplier to delete.",
+      });
+      setIsDeleteModalOpen(false);
+      return;
+    }
+    try{
+      await axios.delete(`${API_BASE_URL}/supplier/${supplierId}`);
+      notifyApiSuccess({
+        title: "Supplier deleted",
+        message: "The supplier has been successfully deleted.",
+      });
+    } catch (err) {
+      appLogger.error("Error deleting supplier", err);
+      notifyApiError(err, {
+        title: "Delete failed",
+        fallbackMessage: "Unable to delete supplier right now.",
+      });
+    }
+
+    setIsDeleteModalOpen(false);
+    setSelectedSupplierId(null);
+  };
+
 
   const totalPages = Math.ceil(filteredSuppliers.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const paginatedSuppliers = filteredSuppliers.slice(startIndex, endIndex);
+
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [selectedSupplierId, setSelectedSupplierId] = useState<number | null>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+  const selectedSupplier = suppliers.find(
+    (supplier) => supplier.supplier_id === selectedSupplierId
+  );
+
+
 
 
 
@@ -125,6 +165,7 @@ export default function ManageSupplier() {
                 <th>Contact Person</th>
                 <th>Email</th>
                 <th>Phone</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -134,6 +175,20 @@ export default function ManageSupplier() {
                   <td>{supplier.contact_person}</td>
                   <td>{supplier.email}</td>
                   <td>{supplier.phone}</td>
+                   <td>
+                      <button onClick={() => {
+                        setSelectedSupplierId(supplier.supplier_id);
+                        setIsEditModalOpen(true);
+                      }}>
+                        <Pencil size={16} />
+                      </button>
+                      <button onClick={() => {
+                        setSelectedSupplierId(supplier.supplier_id);
+                        setIsDeleteModalOpen(true);
+                      }}>
+                        <Trash size={16} />
+                      </button>
+                    </td>
                 </tr>
               ))}
             </tbody>
@@ -159,6 +214,16 @@ export default function ManageSupplier() {
           Next
         </button>
       </div>
+<DeleteConfirmationModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => {
+          setIsDeleteModalOpen(false);
+          setSelectedSupplierId(null);
+        }}
+        onConfirm={() => handleDelete(selectedSupplierId!)}
+        name={selectedSupplier?.name}
+      />
+
     </div>
   );
 }
