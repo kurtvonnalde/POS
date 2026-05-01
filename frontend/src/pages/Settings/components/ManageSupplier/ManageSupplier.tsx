@@ -7,7 +7,8 @@ import {
   useNotifications,
 } from "../../../../components/common";
 import DeleteConfirmationModal from "./DeleteSupplierConfirmationModal";
-
+import AddUserModal from "./AddSupplierModal";
+import AddSupplierModal from "./AddSupplierModal";
 
 
 const API_BASE_URL =
@@ -107,7 +108,7 @@ export default function ManageSupplier() {
     setSelectedSupplierId(null);
   };
 
-
+//delete function
   const totalPages = Math.ceil(filteredSuppliers.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -123,6 +124,11 @@ export default function ManageSupplier() {
 
 
 
+  //add supplier function
+  const [isModalAddOpen, setIsModalAddOpen] = useState(false);
+
+
+
 
 
   return (
@@ -130,7 +136,9 @@ export default function ManageSupplier() {
       <div className="admin-user-card">
         <div className="admin-user-toolbar">
           <div className="admin-user-toolbar-left">
-            <button className="admin-user-tool-btn">
+            <button className="admin-user-tool-btn"
+              onClick={() => setIsModalAddOpen(true)}
+            >
               <Plus size={16} />
               Add Supplier
             </button>
@@ -222,6 +230,18 @@ export default function ManageSupplier() {
         }}
         onConfirm={() => handleDelete(selectedSupplierId!)}
         name={selectedSupplier?.name}
+      />
+
+      <AddSupplierModal
+        isOpen={isModalAddOpen}
+        onClose={() => setIsModalAddOpen(false)}
+        onSaved={(newSupplier) => {
+          setSuppliers([...suppliers, newSupplier]);
+          notifyApiSuccess({
+            title: "Supplier added",
+            message: "A new supplier has been added successfully.",
+          });
+        }}
       />
 
     </div>
