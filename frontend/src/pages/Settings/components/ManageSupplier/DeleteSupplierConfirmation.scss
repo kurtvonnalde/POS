@@ -1,0 +1,22 @@
+@use "./EditSupplierModal.scss";
+
+.manage-user-modal--danger {
+  width: min(92vw, 480px);
+}
+
+.manage-user-modal__body {
+  color: var(--text-color);
+  font-size: 0.93rem;
+  line-height: 1.5;
+  margin: 0 0 1rem;
+
+  p {
+    margin: 0;
+  }
+}
+
+.manage-user-modal__button--danger {
+  background-color: #dc2626;
+  color: #fff;
+  border: 1px solid rgba(220, 38, 38, 0.2);
+}
