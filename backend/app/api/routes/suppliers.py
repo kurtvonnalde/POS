@@ -36,7 +36,7 @@ def delete_supplier(supplier_id: int, db: Session = Depends(get_db)):
     return {"message": "Supplier not found"}
 
 @router.patch("/{supplier_id}")
-def update_supplier(supplier_id: int, name: str = None, contact_person: str = None, db: Session = Depends(get_db)):
+def update_supplier(supplier_id: int, name: str = None, contact_person: str = None, email: str = None, phone: str = None, db: Session = Depends(get_db)):
     supplier = db.query(Supplier).filter(Supplier.supplier_id == supplier_id).first()
     if not supplier:
         return {"message": "Supplier not found"}
@@ -45,7 +45,11 @@ def update_supplier(supplier_id: int, name: str = None, contact_person: str = No
         supplier.name = name
     if contact_person:
         supplier.contact_person = contact_person
-    
+    if email:
+        supplier.email = email
+    if phone:
+        supplier.phone = phone
+
     db.commit()
     db.refresh(supplier)
     return supplier
