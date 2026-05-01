@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.models import Supplier
 from app.schemas.supplier import SupplierCreate, SupplierUpdate
@@ -29,26 +29,27 @@ def get_suppliers(db: Session = Depends(get_db)):
 @router.delete("/{supplier_id}")
 def delete_supplier(supplier_id: int, db: Session = Depends(get_db)):
     supplier = db.query(Supplier).filter(Supplier.supplier_id == supplier_id).first()
-    if supplier:
-        db.delete(supplier)
-        db.commit()
-        return {"message": "Supplier deleted successfully"}
-    return {"message": "Supplier not found"}
+    if not supplier:
+        raise HTTPException(status_code=404, detail="Supplier not found")
+    
+    db.delete(supplier)
+    db.commit()
+    return {"message": "Supplier deleted successfully"}
 
 @router.patch("/{supplier_id}")
-def update_supplier(supplier_id: int, name: str = None, contact_person: str = None, email: str = None, phone: str = None, db: Session = Depends(get_db)):
+def update_supplier(supplier_id: int, supplier_update: SupplierUpdate, db: Session = Depends(get_db)):
     supplier = db.query(Supplier).filter(Supplier.supplier_id == supplier_id).first()
     if not supplier:
-        return {"message": "Supplier not found"}
+        raise HTTPException(status_code=404, detail="Supplier not found")
     
-    if name:
-        supplier.name = name
-    if contact_person:
-        supplier.contact_person = contact_person
-    if email:
-        supplier.email = email
-    if phone:
-        supplier.phone = phone
+    if supplier_update.name is not None:
+        supplier.name = supplier_update.name
+    if supplier_update.contact_person is not None:
+        supplier.contact_person = supplier_update.contact_person
+    if supplier_update.email is not None:
+        supplier.email = supplier_update.email
+    if supplier_update.phone is not None:
+        supplier.phone = supplier_update.phone
 
     db.commit()
     db.refresh(supplier)

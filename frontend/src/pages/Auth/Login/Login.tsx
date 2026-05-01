@@ -39,7 +39,7 @@ const Login: React.FC = () => {
       if (data.access_token) {
         localStorage.setItem("token", data.access_token);
         localStorage.setItem("username", data.username);
-        localStorage.setItem("role", data.role);
+        localStorage.setItem("roleName", data.role_name);
 
         notifyApiSuccess({
           title: "Login successful",
@@ -47,6 +47,7 @@ const Login: React.FC = () => {
         });
 
         window.location.href = "/products";
+       
       } else {
         notifyApiError(new Error(data?.detail || "Invalid username or password."), {
           title: "Login failed",

@@ -22,19 +22,21 @@ export default function Registration({
   const { warning: showWarning } = useNotifications();
   const { notifyApiSuccess, notifyApiError } = useApiNotifier();
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [full_name, setFullName] = useState("");
   const [password, setPassword] = useState("");
   const [retypePassword, setRetypePassword] = useState("");
-  const [role, setRole] = useState("cashier");
+  const [roleId, setRoleId] = useState<number>(2); // Default: cashier (role_id 2)
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
 
   const resetForm = () => {
     setUsername("");
+    setEmail("");
     setFullName("");
     setPassword("");
     setRetypePassword("");
-    setRole("cashier");
+    setRoleId(2);
     setErrors({});
   };
 
@@ -48,6 +50,7 @@ export default function Registration({
   const newErrors: Record<string, string> = {};
 
   if (!username) newErrors.username = "Username is required";
+  if (!email) newErrors.email = "Email is required";
   if (!full_name) newErrors.full_name = "Full name is required";
   if (!password) newErrors.password = "Password is required";
   if (!retypePassword) newErrors.retypePassword = "Please confirm your password";
@@ -60,10 +63,8 @@ export default function Registration({
     newErrors.password = "Password must be at least 6 characters";
   }
 
-  if (!role) {
-    newErrors.role = "Role is required";
-  } else if (!["admin", "cashier", "manager", "viewer"].includes(role)) {
-    newErrors.role = "Invalid role selected";
+  if (!roleId) {
+    newErrors.roleId = "Role is required";
   }
 
   if (Object.keys(newErrors).length > 0) {
@@ -80,9 +81,10 @@ export default function Registration({
   try {
     const response = await axios.post(`${API_BASE_URL}/auth/register`, {
       username,
+      email,
       full_name,
       password,
-      role,
+      role_id: roleId,
     });
 
     const data = response.data;
@@ -156,6 +158,20 @@ export default function Registration({
             </div>
 
             <div className="registration-field">
+              <label htmlFor="email">Email</label>
+              <input
+                id="email"
+                type="email"
+                placeholder="Email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              {errors.email && (
+                <span className="registration-error">{errors.email}</span>
+              )}
+            </div>
+
+            <div className="registration-field">
               <label htmlFor="full_name">Full Name</label>
               <input
                 id="full_name"
@@ -209,19 +225,19 @@ export default function Registration({
             <h3>Access</h3>
 
             <div className="registration-field full-width">
-              <label htmlFor="role">Role</label>
+              <label htmlFor="roleId">Role</label>
               <select
-                id="role"
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
+                id="roleId"
+                value={roleId}
+                onChange={(e) => setRoleId(Number(e.target.value))}
               >
-                <option value="cashier">Cashier</option>
-                <option value="admin">Admin</option>
-                <option value="manager">Manager</option>
-                <option value="viewer">Viewer</option>
+                <option value={1}>Admin</option>
+                <option value={2}>Cashier</option>
+                <option value={3}>Manager</option>
+                <option value={4}>Viewer</option>
               </select>
-              {errors.role && (
-                <span className="registration-error">{errors.role}</span>
+              {errors.roleId && (
+                <span className="registration-error">{errors.roleId}</span>
               )}
             </div>
           </div>

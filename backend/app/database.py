@@ -17,4 +17,5 @@ engine = create_engine(
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 # 4. (Optional) Create all tables (run once at startup)
+# Tables are created in main.py after importing all models
 # Base.metadata.create_all(bind=engine)

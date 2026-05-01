@@ -40,12 +40,19 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
 def login(user: UserLogin, db: Session = Depends(get_db)):
     try:
         db_user = AuthService.authenticate_user(user.username, user.password, db)
-        token = pyjwt.encode({"sub": db_user.username, "role": db_user.role}, SECRET_KEY, algorithm=ALGORITHM)
+        token = pyjwt.encode(
+    {
+        "sub": db_user.username,
+        "role": db_user.role.name  # ✅ use the role name string
+    },
+    SECRET_KEY,
+    algorithm=ALGORITHM
+)
         return {
             "access_token": token,
             "token_type": "bearer",
             "username": db_user.username,
-            "role": db_user.role
+            "role_name": db_user.role.name
         }
     except InvalidCredentials as e:
         raise HTTPException(status_code=e.status_code, detail=e.message)
@@ -69,5 +76,6 @@ def verify_token(current_user: dict = Depends(get_current_user)):
     return {
         "valid": True,
         "username": current_user.get("sub"),
-        "role": current_user.get("role")
+        "user_id": current_user.get("user_id"),
+        "role_id": current_user.get("role_id")
     }

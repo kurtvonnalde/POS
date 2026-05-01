@@ -75,7 +75,7 @@ export default function Header({
   const [role, setRole] = useState<string>("");
 
   useEffect(() => {
-    const storedRole = localStorage.getItem("role");
+    const storedRole = localStorage.getItem("roleName");
     if (storedRole) {
       setRole(storedRole);
     }

@@ -11,16 +11,19 @@ class AuthService:
     def register_user(user: UserCreate, db: Session) -> User:
         """Register a new user"""
         # Check if user already exists
-        existing_user = db.query(User).filter(User.username == user.username).first()
+        existing_user = db.query(User).filter(
+            (User.username == user.username) | (User.email == user.email)
+        ).first()
         if existing_user:
             raise UserAlreadyExists()
         
         # Create new user
         new_user = User(
             username=user.username,
+            email=user.email,
             full_name=user.full_name,
             password_hash=hash_password(user.password),
-            role=user.role
+            role_id=user.role_id
         )
         db.add(new_user)
         db.commit()

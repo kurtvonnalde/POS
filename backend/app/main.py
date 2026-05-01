@@ -1,10 +1,15 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.routes import auth_router, users_router, dashboard_router, suppliers_router
+from app.models import User, Role, Supplier  # Import all models for table creation
+from app.database import engine, Base
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
+
+# Create all tables on startup
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
