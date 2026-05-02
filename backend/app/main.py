@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.api.routes import auth_router, users_router, dashboard_router, suppliers_router
-from app.models import User, Role, Supplier  # Import all models for table creation
+from app.api.routes import auth_router, users_router, dashboard_router, suppliers_router, category_router
+from app.models import User, Role, Supplier, Category  # Import all models for table creation
 from app.database import engine, Base
 import os
 from dotenv import load_dotenv
@@ -29,6 +29,7 @@ app.include_router(auth_router)
 app.include_router(users_router)
 app.include_router(dashboard_router)
 app.include_router(suppliers_router)
+app.include_router(category_router)
 
 @app.get("/health")
 def health():
