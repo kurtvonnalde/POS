@@ -11,4 +11,4 @@ class Supplier(Base):
     contact_person = Column(String, nullable=True)
     phone = Column(String, nullable=True)
     email = Column(String, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.utcnow)j
