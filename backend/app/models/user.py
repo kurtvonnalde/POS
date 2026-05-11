@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime, BigInteger, Boolean, func
 from sqlalchemy.orm import relationship
-from app.base import Base
+from docs.backend.app.base import Base
 from datetime import datetime
 
 class User(Base):
@@ -17,4 +17,8 @@ class User(Base):
 
     # Relationship to Role
     role = relationship("Role", back_populates="users")
+    # Relationships to Sales and Purchases
+    sales = relationship("Sale", back_populates="user")
+    purchases = relationship("Purchase", back_populates="user")
+    audit_logs = relationship("AuditLog", back_populates="user")
 

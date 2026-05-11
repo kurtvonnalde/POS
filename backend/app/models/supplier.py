@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
-from app.base import Base
+from docs.backend.app.base import Base
 from datetime import datetime
 
 class Supplier(Base):
@@ -12,3 +12,6 @@ class Supplier(Base):
     phone = Column(String, nullable=True)
     email = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
+    
+    # Relationships
+    purchases = relationship("Purchase", back_populates="supplier")

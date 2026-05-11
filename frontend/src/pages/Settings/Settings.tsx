@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./Settings.scss";
-import { ManageUsers, ManageSupplier, ManageInventory, ManageCategories } from "./components";
+import { ManageUsers, ManageSupplier, ManageInventory, ManageCategories, ManageProducts } from "./components";
 
 export default function Settings() {
   const tabs = [
@@ -8,6 +8,7 @@ export default function Settings() {
     { id: "tab2", label: "Manage Supplier" },
     { id: "tab3", label: "Manage Inventory" },
     { id: "tab4", label: "Manage Categories" },
+    { id: "tab5", label: "Manage Products" },
   ];
 
   const [activeTab, setActiveTab] = useState(tabs[0].id);
@@ -22,6 +23,8 @@ export default function Settings() {
         return <ManageInventory />;
       case "tab4":
         return <ManageCategories />;
+      case "tab5":
+        return <ManageProducts />;
       default:
         return <ManageUsers />;
     }

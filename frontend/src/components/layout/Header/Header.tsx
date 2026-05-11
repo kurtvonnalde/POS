@@ -7,6 +7,7 @@ import {
   FaSun,
   FaClipboardList,
   FaUserCog,
+  FaShoppingBag,
 } from "react-icons/fa";
 import { FaChartLine, FaChartSimple, FaGear } from "react-icons/fa6";
 import { Link, useLocation } from "react-router-dom";
@@ -117,6 +118,13 @@ export default function Header({
             <span>Products</span>
           </Link>
           <span className="sidebar-listItemText">Products</span>
+        </li>
+        <li className={`sidebar-listItem ${isActive("/purchase") ? "active" : ""}`}>
+          <Link to="/purchase">
+            <FaShoppingBag className="sidebar-listIcon" />
+            <span>Purchase</span>
+          </Link>
+          <span className="sidebar-listItemText">Purchase</span>
         </li>
         <li className={`sidebar-listItem ${isActive("/sales") ? "active" : ""}`}>
           <Link to="/sales">

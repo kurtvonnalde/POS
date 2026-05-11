@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
-from app.base import Base
+from docs.backend.app.base import Base
 from datetime import datetime
 
 class Category(Base):
@@ -10,3 +10,6 @@ class Category(Base):
     name = Column(String, nullable=False)
     description = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
+    
+    # Relationships
+    products = relationship("Product", back_populates="category")

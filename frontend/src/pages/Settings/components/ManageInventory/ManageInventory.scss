@@ -1,0 +1,216 @@
+.inventory-table-wrapper {
+  overflow-x: auto;
+  margin-top: 1.5rem;
+}
+
+.inventory-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+
+  thead {
+    background-color: #f5f5f5;
+    border-bottom: 2px solid #ddd;
+
+    th {
+      padding: 1rem;
+      text-align: left;
+      font-weight: 600;
+      color: #333;
+      white-space: nowrap;
+    }
+  }
+
+  tbody tr {
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #f9f9f9;
+    }
+
+    td {
+      padding: 1rem;
+      color: #555;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 0.5rem;
+
+      button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: 0;
+
+        &.edit-btn {
+          background-color: #e3f2fd;
+          color: #1976d2;
+
+          &:hover {
+            background-color: #1976d2;
+            color: white;
+          }
+        }
+
+        &.delete-btn {
+          background-color: #ffebee;
+          color: #d32f2f;
+
+          &:hover {
+            background-color: #d32f2f;
+            color: white;
+          }
+        }
+      }
+    }
+  }
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 8px;
+  padding: 2rem;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  animation: slideUp 0.3s ease-out;
+
+  @keyframes slideUp {
+    from {
+      transform: translateY(30px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  h2 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: #333;
+    font-size: 1.5rem;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    label {
+      font-weight: 600;
+      color: #333;
+    }
+
+    input,
+    textarea {
+      padding: 0.75rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 1rem;
+      transition: border-color 0.2s;
+
+      &:focus {
+        outline: none;
+        border-color: #1976d2;
+        box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+      }
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+  }
+
+  .form-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 1rem;
+
+    button {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 4px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 0.95rem;
+
+      &.submit-btn {
+        background-color: #1976d2;
+        color: white;
+
+        &:hover {
+          background-color: #1565c0;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 8px rgba(25, 118, 210, 0.3);
+        }
+
+        &:active {
+          transform: translateY(0);
+        }
+      }
+
+      &.cancel-btn {
+        background-color: #f5f5f5;
+        color: #333;
+        border: 1px solid #ddd;
+
+        &:hover {
+          background-color: #eeeeee;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .inventory-table {
+    font-size: 0.85rem;
+
+    thead th,
+    tbody td {
+      padding: 0.75rem 0.5rem;
+    }
+  }
+
+  .modal-content {
+    padding: 1.5rem;
+
+    h2 {
+      font-size: 1.2rem;
+    }
+  }
+}
