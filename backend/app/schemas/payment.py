@@ -9,12 +9,16 @@ class PaymentCreate(BaseModel):
     amount: float
     reference_no: Optional[str] = None
     currency: str = "USD"
+    cash_amount: Optional[float] = None
+    change_amount: Optional[float] = None
 
 
 class PaymentUpdate(BaseModel):
     payment_method: Optional[str] = None
     amount: Optional[float] = None
     reference_no: Optional[str] = None
+    cash_amount: Optional[float] = None
+    change_amount: Optional[float] = None
 
 
 class PaymentResponse(BaseModel):
@@ -25,7 +29,8 @@ class PaymentResponse(BaseModel):
     reference_no: Optional[str] = None
     payment_date: datetime
     currency: str
-    created_at: datetime
+    cash_amount: Optional[float] = None
+    change_amount: Optional[float] = None
 
     class Config:
         from_attributes = True

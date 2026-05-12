@@ -1,6 +1,6 @@
 from sqlalchemy import Column, String, Float, ForeignKey, DateTime, BigInteger, func, Numeric
 from sqlalchemy.orm import relationship
-from docs.backend.app.base import Base
+from app.base import Base
 from datetime import datetime
 
 class Payment(Base):
@@ -12,7 +12,8 @@ class Payment(Base):
     reference_no = Column(String)
     payment_date = Column(DateTime, default=func.now())
     currency = Column(String, default="USD")
-    created_at = Column(DateTime, default=func.now())
+    cash_amount = Column(Numeric(12, 2), nullable=True)  # Amount paid in cash
+    change_amount = Column(Numeric(12, 2), nullable=True)  # Change given
 
     # Relationships
     sale = relationship("Sale", back_populates="payments")

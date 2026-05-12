@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from docs.backend.app.models import Category
-from docs.backend.app.schemas.category import CategoryCreate, CategoryUpdate, CategoryResponse
-from docs.backend.app.database import SessionLocal
+from app.models import Category
+from app.schemas.category import CategoryCreate, CategoryUpdate, CategoryResponse
+from app.database import SessionLocal
 
 router = APIRouter(prefix="/category", tags=["categories"])
 

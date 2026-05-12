@@ -6,6 +6,8 @@ import Inventory from "./pages/Inventory/Inventory";
 import Reports from "./pages/Reports/Reports";
 import Settings from "./pages/Settings/Settings";
 import Purchase from "./pages/Purchase/Purchase";
+import PurchaseHistory from "./pages/PurchaseHistory/PurchaseHistory";
+import SupplierOrders from "./pages/SupplierOrders/SupplierOrders";
 import AppLayout from "./components/layout/AppLayout/AppLayout";
 import { ProtectedRoute } from "./components/common";
 import { AuthLayout } from "./components/layout";
@@ -63,6 +65,26 @@ function App() {
           <ProtectedRoute>
             <AppLayout>
               <Purchase />
+            </AppLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/purchase-history"
+        element={
+          <ProtectedRoute>
+            <AppLayout>
+              <PurchaseHistory />
+            </AppLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/supplier-orders"
+        element={
+          <ProtectedRoute>
+            <AppLayout>
+              <SupplierOrders />
             </AppLayout>
           </ProtectedRoute>
         }

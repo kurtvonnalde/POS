@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from docs.backend.app.models import Purchase, PurchaseItem, Inventory
+from app.models import Purchase, PurchaseItem, Inventory
 from sqlalchemy import func
 
 class PurchaseService:

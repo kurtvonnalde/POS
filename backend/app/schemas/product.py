@@ -32,6 +32,7 @@ class ProductResponse(BaseModel):
     sku: str
     unit_price: float
     is_active: bool
+    available_quantity: int = 0  # New field for inventory quantity
     created_at: datetime
     updated_at: datetime
 

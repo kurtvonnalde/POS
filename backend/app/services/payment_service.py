@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from docs.backend.app.models import Payment, Sale
+from app.models import Payment, Sale, SaleItem, Inventory
 
 class PaymentService:
     """Service for payment operations"""
@@ -21,12 +21,35 @@ class PaymentService:
     
     @staticmethod
     def create_payment(payment_data: dict, db: Session) -> Payment:
-        """Create a new payment"""
-        db_payment = Payment(**payment_data)
-        db.add(db_payment)
-        db.commit()
-        db.refresh(db_payment)
-        return db_payment
+        """Create a new payment and update inventory only when payment is confirmed"""
+        try:
+            # Create payment
+            db_payment = Payment(**payment_data)
+            db.add(db_payment)
+            db.flush()  # Get payment_id without committing
+            
+            # Get the sale and its items to decrement inventory
+            sale_id = payment_data['sale_id']
+            sale = db.query(Sale).filter(Sale.sale_id == sale_id).first()
+            if sale:
+                sale_items = db.query(SaleItem).filter(SaleItem.sale_id == sale_id).all()
+                
+                # Decrement inventory for each item - ONLY when payment is created
+                for sale_item in sale_items:
+                    inventory = db.query(Inventory).filter(
+                        Inventory.product_id == sale_item.product_id
+                    ).first()
+                    if inventory:
+                        inventory.quantity_on_hand -= sale_item.quantity
+            
+            # Commit both payment creation and inventory update together
+            db.commit()
+            db.refresh(db_payment)
+            return db_payment
+        except Exception as e:
+            # Rollback on any error - nothing is saved
+            db.rollback()
+            raise e
     
     @staticmethod
     def update_payment(payment_id: int, update_data: dict, db: Session) -> Payment:

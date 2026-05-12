@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from docs.backend.app.models import Inventory, Product
+from app.models import Inventory, Product
 
 class InventoryService:
     """Service for inventory operations"""

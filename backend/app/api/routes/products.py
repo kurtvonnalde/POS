@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from app.models import Product
+from app.models import Product, Inventory
 from app.schemas.product import ProductCreate, ProductUpdate, ProductResponse
 from app.services.product_service import ProductService
 from app.database import SessionLocal
@@ -24,13 +24,28 @@ def get_products(db: Session = Depends(get_db)):
     """Get all products"""
     return ProductService.get_all_products(db)
 
-@router.get("/barcode/{barcode}", response_model=ProductResponse)
+@router.get("/barcode/{barcode}", response_model=dict)
 def get_product_by_barcode(barcode: str, db: Session = Depends(get_db)):
     """Get a product by barcode for POS scanning"""
     product = db.query(Product).filter(Product.barcode == barcode).first()
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
-    return product
+    # Add inventory quantity to response
+    inventory = db.query(Inventory).filter(Inventory.product_id == product.product_id).first()
+    response = {
+        "product_id": product.product_id,
+        "category_id": product.category_id,
+        "barcode": product.barcode,
+        "name": product.name,
+        "description": product.description,
+        "sku": product.sku,
+        "unit_price": product.unit_price,
+        "is_active": product.is_active,
+        "available_quantity": inventory.quantity_on_hand if inventory else 0,
+        "created_at": product.created_at,
+        "updated_at": product.updated_at
+    }
+    return response
 
 @router.get("/{product_id}", response_model=ProductResponse)
 def get_product(product_id: int, db: Session = Depends(get_db)):

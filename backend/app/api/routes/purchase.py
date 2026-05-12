@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from docs.backend.app.models import Purchase
-from docs.backend.app.schemas.purchase import PurchaseCreate, PurchaseUpdate, PurchaseResponse
-from docs.backend.app.services.purchase_service import PurchaseService
-from docs.backend.app.database import SessionLocal
+from app.models import Purchase
+from app.schemas.purchase import PurchaseCreate, PurchaseUpdate, PurchaseResponse
+from app.services.purchase_service import PurchaseService
+from app.database import SessionLocal
 
 router = APIRouter(prefix="/purchases", tags=["purchases"])
 

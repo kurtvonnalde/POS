@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import func
-from docs.backend.app.models import Sale, SaleItem, Payment, Inventory
+from app.models import Sale, SaleItem, Payment, Inventory
 from datetime import datetime, timedelta
 
 class SaleService:
@@ -25,7 +25,7 @@ class SaleService:
     
     @staticmethod
     def create_sale(sale_data: dict, sale_items: list, db: Session) -> Sale:
-        """Create a new sale with items"""
+        """Create a new sale with items - DO NOT update inventory yet"""
         subtotal = 0.0
         
         # Calculate subtotal
@@ -39,17 +39,12 @@ class SaleService:
         db.add(db_sale)
         db.flush()
         
-        # Add sale items
+        # Add sale items - BUT DO NOT update inventory yet
         for item in sale_items:
             item['sale_id'] = db_sale.sale_id
             item['line_total'] = item['quantity'] * item['unit_price'] - item.get('discount_amount', 0)
             db_sale_item = SaleItem(**item)
             db.add(db_sale_item)
-            
-            # Update inventory
-            inventory = db.query(Inventory).filter(Inventory.product_id == item['product_id']).first()
-            if inventory:
-                inventory.quantity_on_hand -= item['quantity']
         
         db.commit()
         db.refresh(db_sale)

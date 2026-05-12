@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from docs.backend.app.models import Sale
-from docs.backend.app.schemas.sale import SaleCreate, SaleUpdate, SaleResponse
-from docs.backend.app.services.sales_service import SaleService
-from docs.backend.app.database import SessionLocal
+from app.models import Sale
+from app.schemas.sale import SaleCreate, SaleUpdate, SaleResponse
+from app.services.sales_service import SaleService
+from app.database import SessionLocal
 from datetime import datetime, timedelta
 
 router = APIRouter(prefix="/sales", tags=["sales"])
@@ -18,7 +18,7 @@ def get_db():
 @router.post("/", response_model=SaleResponse)
 def create_sale(sale: SaleCreate, db: Session = Depends(get_db)):
     """Create a new sale"""
-    sale_items = sale.sale_items
+    sale_items = [item.dict() for item in sale.sale_items]  # Convert Pydantic models to dicts
     sale_data = sale.dict(exclude={'sale_items'})
     return SaleService.create_sale(sale_data, sale_items, db)
 

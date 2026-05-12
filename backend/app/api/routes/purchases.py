@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from docs.backend.app.models import Payment
-from docs.backend.app.schemas.payment import PaymentCreate, PaymentUpdate, PaymentResponse
-from docs.backend.app.services.payment_service import PaymentService
-from docs.backend.app.database import SessionLocal
+from app.models import Payment
+from app.schemas.payment import PaymentCreate, PaymentUpdate, PaymentResponse
+from app.services.payment_service import PaymentService
+from app.database import SessionLocal
 
 router = APIRouter(prefix="/payments", tags=["payments"])
 

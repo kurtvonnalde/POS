@@ -126,6 +126,20 @@ export default function Header({
           </Link>
           <span className="sidebar-listItemText">Purchase</span>
         </li>
+        <li className={`sidebar-listItem ${isActive("/purchase-history") ? "active" : ""}`}>
+          <Link to="/purchase-history">
+            <FaClipboardList className="sidebar-listIcon" />
+            <span>Hist</span>
+          </Link>
+          <span className="sidebar-listItemText">Purchase History</span>
+        </li>
+        <li className={`sidebar-listItem ${isActive("/supplier-orders") ? "active" : ""}`}>
+          <Link to="/supplier-orders">
+            <FaClipboardList className="sidebar-listIcon" />
+            <span>Orders</span>
+          </Link>
+          <span className="sidebar-listItemText">Supplier Orders</span>
+        </li>
         <li className={`sidebar-listItem ${isActive("/sales") ? "active" : ""}`}>
           <Link to="/sales">
             <FaChartSimple className="sidebar-listIcon" />

@@ -15,6 +15,7 @@ interface Product {
   sku: string;
   unit_price: number;
   is_active: boolean;
+  available_quantity: number;
 }
 
 interface CartItem {
@@ -39,6 +40,7 @@ export default function Purchase() {
   const [scannerEnabled, setScannerEnabled] = useState(false);
   const [checkoutMode, setCheckoutMode] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<"cash" | "card" | "cheque" | "online">("cash");
+  const [cashAmount, setCashAmount] = useState<number>(0);
 
   useEffect(() => {
     fetchProducts();
@@ -67,7 +69,20 @@ export default function Purchase() {
   };
 
   const handleAddToCart = (product: Product) => {
+    // Check if product has available quantity
+    if (product.available_quantity <= 0) {
+      alert(`${product.name} is out of stock!`);
+      return;
+    }
+
     const existingItem = cart.find((item) => item.product_id === product.product_id);
+    const cartQuantity = existingItem ? existingItem.quantity : 0;
+
+    // Check if adding more would exceed available inventory
+    if (cartQuantity >= product.available_quantity) {
+      alert(`Only ${product.available_quantity} of ${product.name} available in stock!`);
+      return;
+    }
 
     if (existingItem) {
       setCart(
@@ -165,6 +180,12 @@ export default function Purchase() {
       const taxAmount = subtotal * (taxRate / 100);
       const totalAmount = subtotal + taxAmount;
 
+      // Validate cash amount if paying with cash
+      if (paymentMethod === "cash" && cashAmount < totalAmount) {
+        alert(`Insufficient cash! Amount due: $${totalAmount.toFixed(2)}, Cash given: $${cashAmount.toFixed(2)}`);
+        return;
+      }
+
       // Create sale
       const saleRes = await axios.post(`${API_BASE_URL}/sales/`, {
         user_id: 1, // Default user, should be from auth
@@ -182,19 +203,25 @@ export default function Purchase() {
         })),
       });
 
+      // Calculate change for cash transactions
+      const changeAmount = paymentMethod === "cash" ? cashAmount - totalAmount : 0;
+
       // Create payment
-      await axios.post(`${API_BASE_URL}/purchases/`, {
+      await axios.post(`${API_BASE_URL}/payments/`, {
         sale_id: saleRes.data.sale_id,
         payment_method: paymentMethod,
         amount: totalAmount,
         reference_no: `SL${Date.now()}`,
         currency: "USD",
+        cash_amount: paymentMethod === "cash" ? cashAmount : null,
+        change_amount: changeAmount > 0 ? changeAmount : null,
       });
 
-      alert("Order completed successfully!");
+      alert(`Order completed successfully!\n${paymentMethod === "cash" ? `Change: $${changeAmount.toFixed(2)}` : ""}`);
       setCart([]);
       setCheckoutMode(false);
       setPaymentMethod("cash");
+      setCashAmount(0);
     } catch (err) {
       console.error("Error completing order:", err);
       alert("Failed to complete order");
@@ -208,8 +235,11 @@ export default function Purchase() {
       product.barcode.toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchesCategory = !selectedCategory || product.category_id === selectedCategory;
+    
+    // Only show products with available stock
+    const hasStock = product.available_quantity > 0;
 
-    return matchesSearch && matchesCategory;
+    return matchesSearch && matchesCategory && hasStock;
   });
 
   const subtotal = cart.reduce((sum, item) => {
@@ -267,12 +297,16 @@ export default function Purchase() {
                       <div className="product-card-inner">
                         <div className="product-image">
                           <div className="placeholder-icon">📦</div>
+                          <div className={`stock-badge ${product.available_quantity <= 5 ? 'low-stock' : 'in-stock'}`}>
+                            {product.available_quantity <= 5 ? '⚠️ Low Stock' : `✓ In Stock`}
+                          </div>
                         </div>
                         <div className="product-info">
                           <h3>{product.name}</h3>
                           <p className="sku">SKU: {product.sku}</p>
                           <p className="barcode">Barcode: {product.barcode}</p>
                           <p className="price">${product.unit_price.toFixed(2)}</p>
+                          <p className="available">Available: {product.available_quantity}</p>
                         </div>
                       </div>
                     </div>
@@ -351,7 +385,10 @@ export default function Purchase() {
                     <select
                       id="payment-method"
                       value={paymentMethod}
-                      onChange={(e) => setPaymentMethod(e.target.value as any)}
+                      onChange={(e) => {
+                        setPaymentMethod(e.target.value as any);
+                        setCashAmount(0);
+                      }}
                       className="payment-select"
                     >
                       <option value="cash">Cash</option>
@@ -360,6 +397,35 @@ export default function Purchase() {
                       <option value="online">Online Transfer</option>
                     </select>
                   </div>
+
+                  {paymentMethod === "cash" && (
+                    <div className="cash-section">
+                      <div className="form-group">
+                        <label htmlFor="cash-amount">Cash Amount:</label>
+                        <input
+                          id="cash-amount"
+                          type="number"
+                          min="0"
+                          step="0.01"
+                          value={cashAmount}
+                          onChange={(e) => setCashAmount(parseFloat(e.target.value) || 0)}
+                          placeholder={`Total: $${total.toFixed(2)}`}
+                          className="cash-input"
+                        />
+                      </div>
+                      {cashAmount > 0 && (
+                        <div className="change-display">
+                          <div className={`change-item ${cashAmount >= total ? 'valid' : 'invalid'}`}>
+                            <span>Change:</span>
+                            <strong>${(cashAmount - total).toFixed(2)}</strong>
+                          </div>
+                          {cashAmount < total && (
+                            <p className="warning">Insufficient amount!</p>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )}
 
                   <div className="checkout-buttons">
                     <button
